@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for post in posts %}
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.description }}</p>
+
+    {% if post.media %}
+        <img src="{{ post.media.url }}" alt="{{ post.title }}" width="300">
+    {% endif %}
+    <p><small>Posted on {{ post.created_at }}</small></p>
+{% empty %}
+    <h1>No posts</h1>
+{% endfor %}
+
+</body>
+</html>
