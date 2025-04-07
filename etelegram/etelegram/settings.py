@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'accounts',
     'forum',
+    'main',
 ]
+LOGIN_REDIRECT_URL = '/main/'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,7 +60,9 @@ ROOT_URLCONF = 'etelegram.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates',  # Глобальная папка для шаблонов (если есть)
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

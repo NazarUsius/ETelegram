@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from forum import views 
 from django.urls import path, include
+from main.views import home_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.landing_page, name='landing'),
     path('accounts/', include('accounts.urls')),
+    path('main/', home_view, name='main')
 ]
