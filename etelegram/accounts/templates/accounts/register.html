@@ -1,22 +1,25 @@
 {% extends 'base.html' %}
-
+{% load widget_tweaks %}
 {% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100" style="background-color: transparent;">
+    <div class="card shadow-sm p-4" style="width: 400px; border-radius: 15px; background-color: white;">
+        <h3 class="text-center mb-3 text-success">Реєстрація</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.username|add_class:"custom-input" }}
+            {{ form.password1|add_class:"custom-input" }}
+            {{ form.password2|add_class:"custom-input" }}
 
-    <!-- Центрируем форму -->
-    <div class="d-flex justify-content-center align-items-center vh-100" style="background-color: transparent;">
-        <div class="card shadow-sm p-4" style="width: 400px; border-radius: 15px; background-color: white;">
-            <h3 class="text-center mb-3 text-success">Реєстрація</h3>
-            <form method="post">
-                {% csrf_token %}
-                <input type="text" name="username" placeholder="Ім'я користувача" class="custom-input" required>
-                <input type="password" name="password1" placeholder="Пароль" class="custom-input" required>
-                <input type="password" name="password2" placeholder="Підтвердження паролю" class="custom-input" required>
-                <button type="submit" class="btn btn-outline-success w-100">Зареєструватися</button>
-            </form>
-            <div class="text-center mt-3">
-                <a href="{% url 'login' %}" class="text-success">Вже маєте акаунт? Увійти</a>
+            <div class="mb-3">
+                {{ form.group.label_tag }}
+                {{ form.group }}
             </div>
+
+            <button type="submit" class="btn btn-outline-success w-100">Зареєструватися</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="{% url 'login' %}" class="text-success">Вже маєте акаунт? Увійти</a>
         </div>
     </div>
-
+</div>
 {% endblock %}
