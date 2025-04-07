@@ -10,6 +10,12 @@
 
 Портал групи написаний на фреймворкі [Django](https://www.djangoproject.com/)
 
+## 💾 Розробники
+
+- [r1zexxx](https://github.com/r1zexxx)
+- [NazarUsius](https://github.com/NazarUsius)
+- [Slekatom](https://github.com/Slekatom)
+
 
 ## 🔨 Як запустити проєкт?
 
@@ -33,14 +39,6 @@
    python etelegram\manage.py migrate
    python etelegram\manage.py runserver
    ```
-
-
-
-## 💾 Розробники
-
-- [r1zexxx](https://github.com/r1zexxx)
-- [NazarUsius](https://github.com/NazarUsius)
-- [Slekatom](https://github.com/Slekatom)
 
 
 ## 📔 Ліцензія
