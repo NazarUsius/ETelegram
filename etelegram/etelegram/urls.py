@@ -16,16 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from forum import views 
 from django.urls import path, include
-from main.views import home_view
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.landing_page, name='landing'),
+    path('', include('main.urls')),
     path('accounts/', include('accounts.urls')),
-    path('main/', home_view, name='main'),
     path('forum/', include('forum.urls')),
+    path('calendar/', include('event_calendar.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
