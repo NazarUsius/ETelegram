@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +29,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+import json
+
+GOOGLE_CREDENTIALS_JSON = os.getenv("GOOGLE_CREDENTIALS")
+GOOGLE_CREDENTIALS = json.loads(GOOGLE_CREDENTIALS_JSON)
+
+GOOGLE_CALENDAR_ID = os.getenv("GOOGLE_CALENDAR_ID")
+
 
 # Application definition
 
@@ -40,7 +56,11 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'accounts',
     'forum',
+    'main',
+    'event_calendar'
 ]
+LOGIN_REDIRECT_URL = '/main/'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,7 +77,9 @@ ROOT_URLCONF = 'etelegram.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates',  # Глобальная папка для шаблонов (если есть)
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,3 +145,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
