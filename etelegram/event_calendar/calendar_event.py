@@ -41,8 +41,8 @@ from django.conf import settings
 from datetime import datetime, timezone
 
 def get_upcoming_events(max_results=10):
-    credentials = service_account.Credentials.from_service_account_file(
-        settings.GOOGLE_CALENDAR_CREDENTIALS_PATH,
+    credentials = service_account.Credentials.from_service_account_info(
+        settings.GOOGLE_CREDENTIALS,
         scopes=['https://www.googleapis.com/auth/calendar.readonly']
     )
 
