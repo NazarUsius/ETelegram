@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forum</title>
+</head>
+<body>
+    {% for data in posts_data %}
+        <div class="post">
+            <h3>{{ data.post.title }}</h3>
+            <p>{{ data.post.description }}</p>
+
+            {% if data.post.media %}
+                <img src="{{ data.post.media.url }}" alt="{{ data.post.title }}" width="300">
+            {% endif %}
+
+            <p><small>Posted on {{ data.post.created_at }}</small></p>
+
+            <!-- Display likes and dislikes for the post -->
+            <div class="likes-dislikes">
+                <h4>Likes: {{ data.likes }}</h4>
+                <h4>Dislikes: {{ data.dislikes }}</h4>
+            </div>
+
+            <!-- Display comments for the post -->
+            <div class="comments">
+                {% if data.comments %}
+                    <h4>Comments:</h4>
+                    {% for comment in data.comments %}
+                        <div class="comment">
+                            <p><strong>{{ comment.user.username }}:</strong> {{ comment.description }}</p>
+                            <p><small>Posted on {{ comment.created_at }}</small></p>
+
+                            <!-- Display likes and dislikes for the comment -->
+                            <div class="comment-likes-dislikes">
+                                <h5>Likes: {{ data.comment_likes|first }}</h5>
+                                <h5>Dislikes: {{ data.comment_dislikes|first }}</h5>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No comments yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <h1>No posts available</h1>
+    {% endfor %}
+</body>
+</html>

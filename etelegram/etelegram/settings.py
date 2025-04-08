@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'forum',
     'main',
     'event_calendar'
+
 ]
 LOGIN_REDIRECT_URL = '/main/'
 
