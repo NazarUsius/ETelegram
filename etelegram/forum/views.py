@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 from .models import *
+from .forms import *
+from django.urls import reverse
 
 
 def landing_page(request):
@@ -53,3 +55,11 @@ class PostDetailView(DetailView):
         post = self.get_object()
 
         return {'data': get_post_data(post)}
+
+class PostCreateView(CreateView):
+    model = Post
+    template_name = "post_create.html"
+    form_class = PostForm
+
+    def get_success_url(self):
+        return reverse("post_list")
