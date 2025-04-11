@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -39,12 +38,11 @@
         .container {
             z-index: 1;
             position: absolute;
-            top: 50%; 
+            top: 40%; 
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            padding: 40px;
-            margin-top: 80px; /* Добавить отступ сверху для учёта фиксированного навбара */
+            padding: 10px;
         }
 
         h1 {
@@ -139,7 +137,7 @@
                         </a>
                         
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/profile">Профіль</a></li>
+                            <li><a class="dropdown-item" href="#">Профіль</a></li>
                             <li>
                                 <form action="{% url 'logout' %}" method="post">
                                     {% csrf_token %}
