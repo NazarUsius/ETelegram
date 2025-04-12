@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from .models import *
+from .forms import *
+from django.urls import reverse
 
 
 def landing_page(request):
@@ -53,3 +55,27 @@ class PostDetailView(DetailView):
         post = self.get_object()
 
         return {'data': get_post_data(post)}
+
+class PostCreateView(CreateView):
+    model = Post
+    template_name = "post_create.html"
+    form_class = PostForm
+
+    def get_success_url(self):
+        return reverse("post_list")
+
+class PostUpdateView(UpdateView):
+    model = Post
+    template_name = "post_update.html"
+    fields = ["title", "description"]
+
+    def get_success_url(self):
+        return reverse('post_detail', kwargs={'pk': self.object.pk})
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = "post_detail.html"
+    context_object_name = 'data'
+
+    def get_success_url(self):
+        return reverse('post_list')
