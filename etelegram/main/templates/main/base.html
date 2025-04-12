@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -43,6 +44,7 @@
             transform: translate(-50%, -50%);
             text-align: center;
             padding: 40px;
+            margin-top: 80px; /* Добавить отступ сверху для учёта фиксированного навбара */
         }
 
         h1 {
@@ -60,7 +62,7 @@
 
         .navbar {
             background-color: #00bcd4;
-            z-index: 1050;
+            z-index: 1100; /* Убедись, что z-index достаточно высок */
         }
 
         .navbar-nav .nav-item.dropdown .dropdown-menu {
@@ -125,9 +127,7 @@
     <!-- Навигационная панель -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
         <div class="container-fluid">
-            
-            <a class="navbar-brand" href="/">Є-Telegram</a>
-            
+            <a class="navbar-brand" href="/main/">Є-Telegram</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -139,7 +139,7 @@
                         </a>
                         
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Профіль</a></li>
+                            <li><a class="dropdown-item" href="/profile">Профіль</a></li>
                             <li>
                                 <form action="{% url 'logout' %}" method="post">
                                     {% csrf_token %}
@@ -162,12 +162,8 @@
                         <a class="nav-link" href="#">Опитування</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Оголошення</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#">Матеріали</a>
                     </li>
-                    
                 </ul>
             </div>
         </div>

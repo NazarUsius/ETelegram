@@ -1,5 +1,9 @@
+import json
+
+from django.shortcuts import render
+
 from .calendar_event import create_google_calendar_event, get_upcoming_events
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from datetime import datetime, timedelta
 from django.http import JsonResponse
 
@@ -30,4 +34,4 @@ def list_events_view(request):
             'link': event.get('htmlLink'),
         })
 
-    return JsonResponse(simplified, safe=False)
+    return render(request, 'calendar.html', {'json_data': simplified})

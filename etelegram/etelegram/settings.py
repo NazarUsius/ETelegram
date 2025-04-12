@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'accounts',
     'forum',
     'main',
-    'event_calendar'
+    'event_calendar',
+    'profilemenu',
 
 ]
 LOGIN_REDIRECT_URL = '/main/'
