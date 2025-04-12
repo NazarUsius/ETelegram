@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import DetailView, ListView, CreateView, UpdateView
+from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from .models import *
 from .forms import *
 from django.urls import reverse
@@ -67,7 +67,15 @@ class PostCreateView(CreateView):
 class PostUpdateView(UpdateView):
     model = Post
     template_name = "post_update.html"
-    fields = ["title", "description", "media"]
+    fields = ["title", "description"]
 
     def get_success_url(self):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = "post_detail.html"
+    context_object_name = 'data'
+
+    def get_success_url(self):
+        return reverse('post_list')

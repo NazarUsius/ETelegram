@@ -81,6 +81,12 @@
 
         </div>
     </div>
+
+    <!-- Delete Form -->
+    <form method="post" action="{% url 'post_delete' data.post.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete this post</button>
+    </form>
 </div>
 
 <!-- Bootstrap JS -->

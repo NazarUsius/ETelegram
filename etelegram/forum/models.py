@@ -11,8 +11,8 @@ class Post(models.Model):
 
 
 class LikePost(models.Model):
-    post = models.ForeignKey(Post, related_name="likes", on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(User, related_name="liked_posts", on_delete=models.DO_NOTHING)
+    post = models.ForeignKey(Post, related_name="likes", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="liked_posts", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -20,8 +20,8 @@ class LikePost(models.Model):
 
 
 class DislikePost(models.Model):
-    post = models.ForeignKey(Post, related_name="dislikes", on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(User, related_name="disliked_posts", on_delete=models.DO_NOTHING)
+    post = models.ForeignKey(Post, related_name="dislikes", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="disliked_posts", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -30,8 +30,8 @@ class DislikePost(models.Model):
 
 class Comment(models.Model):
     description = models.TextField(max_length=100)
-    user = models.ForeignKey(User, related_name="comments", on_delete=models.DO_NOTHING)
-    post = models.ForeignKey(Post, related_name="comments", on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, related_name="comments", on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -39,8 +39,8 @@ class Comment(models.Model):
 
 
 class LikeComment(models.Model):
-    comment = models.ForeignKey(Comment, related_name="likes", on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(User, related_name="liked_comments", on_delete=models.DO_NOTHING)
+    comment = models.ForeignKey(Comment, related_name="likes", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="liked_comments", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -48,8 +48,8 @@ class LikeComment(models.Model):
 
 
 class DislikeComment(models.Model):
-    comment = models.ForeignKey(Comment, related_name="dislikes", on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(User, related_name="disliked_comments", on_delete=models.DO_NOTHING)
+    comment = models.ForeignKey(Comment, related_name="dislikes", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="disliked_comments", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
