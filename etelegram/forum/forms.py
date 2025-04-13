@@ -13,10 +13,10 @@ class BranchForm(forms.ModelForm):
         model = Branch
         fields = ["title", "description", "media"]
 
-# class LikePostForm(forms.ModelForm):
-#     class Meta:
-#         model = LikePost
-#         fields = ["post"]
+class LikeBranchForm(forms.ModelForm):
+    class Meta:
+        model = LikeBranch
+        fields = []
 
 class CommentForm(forms.ModelForm):
     class Meta:
