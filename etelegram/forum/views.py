@@ -5,6 +5,7 @@ from .forms import *
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 def landing_page(request):
     return render(request, 'landing.html')
@@ -46,10 +47,11 @@ class BranchListView(ListView):
         return {"branch_data": branch_data}
 
 
-class BranchDetailView(DetailView):
+class BranchDetailView(LoginRequiredMixin, DetailView):
     model = Branch
     template_name = "branch_detail.html"
     context_object_name = "data"
+    login_url = "/accounts/login/"
 
     def get_context_data(self, **kwargs):
         post = self.get_object()
@@ -59,34 +61,41 @@ class BranchDetailView(DetailView):
         context['form'] = CommentForm()
         return context
 
-class BranchCreateView(CreateView):
+class BranchCreateView(UserPassesTestMixin, CreateView):
     model = Branch
     template_name = "branch_create.html"
     form_class = BranchForm
+    login_url = "/accounts/login/"
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
     def get_success_url(self):
         return reverse("branch_list")
 
-class BranchUpdateView(UpdateView):
+class BranchUpdateView(LoginRequiredMixin, UpdateView):
     model = Branch
     template_name = "branch_update.html"
     fields = ["title", "description"]
+    login_url = "/accounts/login/"
 
     def get_success_url(self):
         return reverse('branch_detail', kwargs={'pk': self.object.pk})
 
-class BranchDeleteView(DeleteView):
+class BranchDeleteView(LoginRequiredMixin, DeleteView):
     model = Branch
     template_name = "branch_detail.html"
     context_object_name = 'data'
+    login_url = "/accounts/login/"
 
     def get_success_url(self):
         return reverse('branch_list')
 
-class CommentCreateView(CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     template_name = "branch_detail"
     form_class = CommentForm
+    login_url = "/accounts/login/"
 
     def form_valid(self, form):
         branch = Branch.objects.get(pk=self.kwargs['pk'])
