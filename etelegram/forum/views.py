@@ -73,20 +73,26 @@ class BranchCreateView(UserPassesTestMixin, CreateView):
     def get_success_url(self):
         return reverse("branch_list")
 
-class BranchUpdateView(LoginRequiredMixin, UpdateView):
+class BranchUpdateView(UserPassesTestMixin, UpdateView):
     model = Branch
     template_name = "branch_update.html"
     fields = ["title", "description"]
     login_url = "/accounts/login/"
 
+    def test_func(self):
+        return self.request.user.is_superuser
+
     def get_success_url(self):
         return reverse('branch_detail', kwargs={'pk': self.object.pk})
 
-class BranchDeleteView(LoginRequiredMixin, DeleteView):
+class BranchDeleteView(UserPassesTestMixin, DeleteView):
     model = Branch
     template_name = "branch_detail.html"
     context_object_name = 'data'
     login_url = "/accounts/login/"
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
     def get_success_url(self):
         return reverse('branch_list')
