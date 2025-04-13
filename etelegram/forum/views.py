@@ -3,19 +3,20 @@ from django.views.generic import DetailView, ListView, CreateView, UpdateView, D
 from .models import *
 from .forms import *
 from django.urls import reverse
-
+from django.urls import reverse_lazy
+from django.http import HttpResponseForbidden
 
 def landing_page(request):
     return render(request, 'landing.html')
 
-def get_post_data(post):
-    post_likes = LikePost.objects.filter(post=post)
-    post_dislikes = DislikePost.objects.filter(post=post)
-    post_comments = Comment.objects.filter(post=post)
+def get_post_data(branch):
+    branch_likes = LikeBranch.objects.filter(branch=branch)
+    branch_dislikes = DislikeBranch.objects.filter(branch=branch)
+    branch_comments = Comment.objects.filter(branch=branch)
 
     comments_data = []
 
-    for comment in post_comments:
+    for comment in branch_comments:
         comment_likes = LikeComment.objects.filter(comment=comment).count()
         comment_dislikes = DislikeComment.objects.filter(comment=comment).count()
 
@@ -24,58 +25,74 @@ def get_post_data(post):
             'like_count': comment_likes,
             'dislike_count': comment_dislikes
         })
+    #form = CommentForm()
 
     return {
-        'post': post,
-        'likes': post_likes.count(),
-        'dislikes': post_dislikes.count(),
+        'branch': branch,
+        #'form': form,
+        'likes': branch_likes.count(),
+        'dislikes': branch_dislikes.count(),
         'comments': comments_data
     }
 
-class PostListView(ListView):
-    model = Post
+class BranchListView(ListView):
+    model = Branch
     template_name = "forum.html"
     context_object_name = "posts_data"
 
     def get_context_data(self, **kwargs):
-        posts = Post.objects.all()
-
-        # Using get_post_data to clean up code repetition
-        posts_data = [get_post_data(post) for post in posts]
-
-        return {"posts_data": posts_data}
+        branch = Branch.objects.all()
+        branch_data = [get_post_data(i) for i in branch]
+        return {"branch_data": branch_data}
 
 
-class PostDetailView(DetailView):
-    model = Post
-    template_name = "post_detail.html"
+class BranchDetailView(DetailView):
+    model = Branch
+    template_name = "branch_detail.html"
     context_object_name = "data"
 
     def get_context_data(self, **kwargs):
         post = self.get_object()
+        data = get_post_data(post)
+        context = super().get_context_data(**kwargs)
+        context['data'] = data
+        context['form'] = CommentForm()
+        return context
 
-        return {'data': get_post_data(post)}
-
-class PostCreateView(CreateView):
-    model = Post
-    template_name = "post_create.html"
-    form_class = PostForm
+class BranchCreateView(CreateView):
+    model = Branch
+    template_name = "branch_create.html"
+    form_class = BranchForm
 
     def get_success_url(self):
-        return reverse("post_list")
+        return reverse("branch_list")
 
-class PostUpdateView(UpdateView):
-    model = Post
-    template_name = "post_update.html"
+class BranchUpdateView(UpdateView):
+    model = Branch
+    template_name = "branch_update.html"
     fields = ["title", "description"]
 
     def get_success_url(self):
-        return reverse('post_detail', kwargs={'pk': self.object.pk})
+        return reverse('branch_detail', kwargs={'pk': self.object.pk})
 
-class PostDeleteView(DeleteView):
-    model = Post
-    template_name = "post_detail.html"
+class BranchDeleteView(DeleteView):
+    model = Branch
+    template_name = "branch_detail.html"
     context_object_name = 'data'
 
     def get_success_url(self):
-        return reverse('post_list')
+        return reverse('branch_list')
+
+class CommentCreateView(CreateView):
+    model = Comment
+    template_name = "branch_detail"
+    form_class = CommentForm
+
+    def form_valid(self, form):
+        branch = Branch.objects.get(pk=self.kwargs['pk'])
+        form.instance.branch = branch
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('branch_detail', kwargs={'pk': self.kwargs['pk']})

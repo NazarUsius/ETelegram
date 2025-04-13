@@ -1,11 +1,13 @@
 from django.urls import path
 from . import views
-from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
+from .views import BranchListView, BranchDetailView, BranchCreateView, BranchUpdateView, BranchDeleteView, CommentCreateView
 
 urlpatterns = [
-    path("", PostListView.as_view(), name = 'post_list'),
-    path("<int:pk>/", PostDetailView.as_view(), name = "post_detail"),
-    path("create/", PostCreateView.as_view(), name = "post_create"),
-    path("<int:pk>/update/", PostUpdateView.as_view(), name = "post_update"),
-    path("<int:pk>/delete", PostDeleteView.as_view(), name = "post_delete"),
+    path("", BranchListView.as_view(), name = 'branch_list'),
+    path("<int:pk>/", BranchDetailView.as_view(), name = "branch_detail"),
+    path("create/", BranchCreateView.as_view(), name = "branch_create"),
+    path("<int:pk>/update/", BranchUpdateView.as_view(), name = "branch_update"),
+    path("<int:pk>/delete", BranchDeleteView.as_view(), name = "branch_delete"),
+    #path("<int:pk>/like", LikePostCreateView.as_view(), name = "like_post"),
+    path('forum/<int:pk>/comment/', CommentCreateView.as_view(), name='comment_create'),
 ]
