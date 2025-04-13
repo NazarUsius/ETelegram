@@ -91,6 +91,14 @@ class BranchDeleteView(UserPassesTestMixin, DeleteView):
     context_object_name = 'data'
     login_url = "/accounts/login/"
 
+    def get_context_data(self, **kwargs):
+        post = self.get_object()
+        data = get_post_data(post)
+        context = super().get_context_data(**kwargs)
+        context['data'] = data
+        context['form'] = CommentForm()
+        return context
+
     def test_func(self):
         return self.request.user.is_superuser
 
@@ -110,4 +118,31 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        return reverse('branch_detail', kwargs={'pk': self.kwargs['pk']})
+
+
+class LikeBranchCreateView(LoginRequiredMixin, CreateView):
+    model = LikeBranch
+    form_class = LikeBranchForm
+    template_name = "branch_detail.html"
+    login_url = "/accounts/login/"
+
+    def form_valid(self, form):
+        # Получаем объект ветки
+        branch = get_object_or_404(Branch, pk=self.kwargs['pk'])
+
+        # Проверка, чтобы пользователь не лайкал дважды
+        if LikeBranch.objects.filter(user=self.request.user, branch=branch).exists():
+            return HttpResponseForbidden("You have already liked this branch.")
+
+        # Присваиваем пользователя и ветку
+        form.instance.user = self.request.user
+        form.instance.branch = branch
+
+        # Сохраняем форму
+        response = super().form_valid(form)
+        return response
+
+    def get_success_url(self):
+        # После успешного лайка перенаправляем на детальную страницу ветки
         return reverse('branch_detail', kwargs={'pk': self.kwargs['pk']})
