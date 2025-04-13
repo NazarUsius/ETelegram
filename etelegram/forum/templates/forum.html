@@ -7,8 +7,6 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-
-    <!-- Optional: Animate.css for extra animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <style>
@@ -33,28 +31,54 @@
 <div class="container py-4">
     <h1 class="mb-4 text-center">Forum Posts</h1>
 
-    {% for data in posts_data %}
+    {% for data in branch_data %}
         <div class="card mb-4 shadow-sm fade-in-card">
             <div class="card-body">
-                <h3 class="card-title">{{ data.post.title }}</h3>
-                <p class="card-text">{{ data.post.description }}</p>
+                <h3 class="card-title">{{ data.branch.title }}</h3>
+                <p class="card-text">{{ data.branch.description }}</p>
 
-                {% if data.post.media %}
-                    <img src="{{ data.post.media.url }}" alt="{{ data.post.title }}" class="img-fluid rounded mb-3"
+                {% if data.branch.media %}
+                    <img src="{{ data.branch.media.url }}" alt="{{ data.branch.title }}" class="img-fluid rounded mb-3"
                          style="max-width: 100%; height: auto;">
                 {% endif %}
 
-                <p class="text-muted"><small>Posted on {{ data.post.created_at }}</small></p>
+                <p class="text-muted"><small>Posted on {{ data.branch.created_at }}</small></p>
 
                 <div class="d-flex justify-content-start gap-4 mb-3">
                     <span class="badge bg-success">Likes: {{ data.likes }}</span>
                     <span class="badge bg-danger">Dislikes: {{ data.dislikes }}</span>
                 </div>
 
+                <!-- Button to go to detailed post view -->
+                <a href="{% url 'branch_detail' data.branch.pk %}" class="btn btn-outline-primary btn-sm">View Details</a>
+
                 <!-- Comments Accordion -->
                 <div class="accordion mt-4" id="accordion-{{ forloop.counter }}">
                     <div class="accordion-item">
-
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#comments-{{ forloop.counter }}" aria-expanded="false">
+                                Comments
+                            </button>
+                        </h2>
+                        <div id="comments-{{ forloop.counter }}" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                {% if data.comments %}
+                                    {% for comment_data in data.comments %}
+                                        <div class="border-start ps-3 mb-3">
+                                            <p><strong>{{ comment_data.comment.user.username }}</strong>: {{ comment_data.comment.description }}</p>
+                                            <p class="text-muted"><small>Posted on {{ comment_data.comment.created_at }}</small></p>
+                                            <div class="d-flex gap-3">
+                                                <span class="badge bg-primary">Likes: {{ comment_data.like_count }}</span>
+                                                <span class="badge bg-secondary">Dislikes: {{ comment_data.dislike_count }}</span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="text-muted">No comments yet.</p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -66,7 +90,7 @@
         </div>
     {% endfor %}
 </div>
-http://127.0.0.1:8000/forum/create/
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
