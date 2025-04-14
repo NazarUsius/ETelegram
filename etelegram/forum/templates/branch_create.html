@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-
+{% block body_overflow %}overflow-y: auto;{% endblock %}
 {% block head %}
 <style>
     body {
         background: #e0f7fa !important;
     }
     .container {
-        margin-top: 500px; /* Збільшено значення margin-top */
+        margin-top: 500px;
     }
 </style>
 {% endblock %}

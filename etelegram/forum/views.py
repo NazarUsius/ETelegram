@@ -59,6 +59,7 @@ class BranchDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['data'] = data
         context['form'] = CommentForm()
+        context['user'] = self.request.user
         return context
 
 class BranchCreateView(UserPassesTestMixin, CreateView):
@@ -128,21 +129,15 @@ class LikeBranchCreateView(LoginRequiredMixin, CreateView):
     login_url = "/accounts/login/"
 
     def form_valid(self, form):
-        # Получаем объект ветки
         branch = get_object_or_404(Branch, pk=self.kwargs['pk'])
 
-        # Проверка, чтобы пользователь не лайкал дважды
         if LikeBranch.objects.filter(user=self.request.user, branch=branch).exists():
             return HttpResponseForbidden("You have already liked this branch.")
-
-        # Присваиваем пользователя и ветку
         form.instance.user = self.request.user
         form.instance.branch = branch
 
-        # Сохраняем форму
         response = super().form_valid(form)
         return response
 
     def get_success_url(self):
-        # После успешного лайка перенаправляем на детальную страницу ветки
         return reverse('branch_detail', kwargs={'pk': self.kwargs['pk']})

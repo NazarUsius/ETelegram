@@ -14,7 +14,8 @@
     font-family: 'Segoe UI', sans-serif;
     zoom: 1.2;
     overflow-x: hidden;
-    overflow-y: auto;
+    {% block body_overflow %}overflow-y: auto;{% endblock %}
+
 }
 
 .stars {
