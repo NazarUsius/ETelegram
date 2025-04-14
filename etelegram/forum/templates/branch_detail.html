@@ -1,185 +1,93 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
-<!--<div class="container py-4">-->
-
-<!--    &lt;!&ndash; Назва гілки &ndash;&gt;-->
-<!--    <div class="text-center mb-4">-->
-<!--        <h2 class="fw-bold">-->
-<!--            <i class="bi bi-megaphone-fill text-primary me-2"></i>{{ data.branch.title }}-->
-<!--        </h2>-->
-<!--        <p class="text-muted">{{ data.branch.description }}</p>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Зображення &ndash;&gt;-->
-<!--    {% if data.branch.media %}-->
-<!--        <div class="text-center mb-4">-->
-<!--            <img src="{{ data.branch.media.url }}" alt="media" class="img-fluid rounded shadow" style="max-height: 300px; object-fit: cover;">-->
-<!--        </div>-->
-<!--    {% endif %}-->
-
-<!--    &lt;!&ndash; Дата та реакції &ndash;&gt;-->
-<!--    <div class="d-flex justify-content-between align-items-center mb-3">-->
-<!--        <small class="text-muted"><i class="bi bi-calendar-event me-1"></i>{{ data.branch.created_at }}</small>-->
-<!--        <div>-->
-<!--            <span class="badge bg-success me-2"><i class="bi bi-hand-thumbs-up-fill"></i> {{ data.likes }}</span>-->
-<!--            <span class="badge bg-danger"><i class="bi bi-hand-thumbs-down-fill"></i> {{ data.dislikes }}</span>-->
-<!--        </div>-->
-<!--    </div>-->
-<br xmlns="http://www.w3.org/1999/html">
 <div class="container py-5">
-  <!-- Branch Title and Description -->
+  <!-- Заголовок гілки -->
   <div class="text-center mb-5">
-    <div class=" text-white py-3 rounded-3" style="background-color: #a8d3a5;">
+    <div class="bg-success text-white py-3 rounded-3">
       <h2 class="fw-bold display-4 mb-2">
-        <i class="bi bi-megaphone-fill me-3"></i>Інформація про гілку
+        Інформація про гілку
       </h2>
     </div>
   </div>
 
-  <!-- Branch Image and Details -->
-  <div class="d-flex justify-content-start align-items-start" style="background-color: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 10px;">
-    <img src="{{ data.branch.media.url }}" alt="Branch Media" class="img-fluid rounded shadow" style="width: 400px; height: auto; object-fit: cover;">
+  <!-- Інформація про гілку -->
+  <div class="d-flex bg-white rounded-3 shadow-sm p-3 mb-4">
+    <img src="{{ data.branch.media.url }}" alt="Branch Media"
+         class="img-fluid rounded shadow"
+         style="width: 400px; object-fit: cover;">
 
-    <div class="ms-3" style="flex-grow: 1;">
-      <article class="mb-3">
-        <div class="p-3 bg-light rounded-2">
-          <h5 class="fs-6 fw-semibold text-primary">Назва гілки</h5>
-          <p class="fs-6 text-dark">{{ data.branch.title }}</p>
-        </div>
-      </article>
-
-      <article class="mb-3">
-        <div class="p-3 bg-light rounded-2">
-          <h5 class="fs-6 fw-semibold text-primary">Опис</h5>
-          <p class="fs-6 text-dark">{{ data.branch.description }}</p>
-        </div>
-      </article>
-
-      <article>
-        <div class="p-3 bg-light rounded-2">
-          <h5 class="fs-6 fw-semibold text-primary">Дата створення</h5>
-          <p class="fs-6 text-dark">{{ data.branch.created_at }}</p>
-        </div>
-      </article>
+    <div class="ms-3 flex-grow-1">
+      <div class="mb-3 p-3 bg-light rounded">
+        <h5 class="text-primary fw-semibold">Назва гілки</h5>
+        <p class="text-dark mb-0">{{ data.branch.title }}</p>
+      </div>
+      <div class="mb-3 p-3 bg-light rounded">
+        <h5 class="text-primary fw-semibold">Опис</h5>
+        <p class="text-dark mb-0">{{ data.branch.description }}</p>
+      </div>
+      <div class="p-3 bg-light rounded">
+        <h5 class="text-primary fw-semibold">Дата створення</h5>
+        <p class="text-dark mb-0">{{ data.branch.created_at }}</p>
+      </div>
     </div>
   </div>
 
-  <!-- Divider -->
-  <hr class="my-4" style="border-color: #dee2e6;">
+  <hr class="my-4">
 
+  <!-- Обговорення -->
+  <div class="mb-4">
+    <div class="p-3 text-primary-emphasis bg-success-subtle border border-primary-subtle rounded-3 mb-3">
+      Обговорення на гілці "{{ data.branch.title }}"
+    </div>
 
-<!-- 💬 Коментарі -->
-<div class="container mt-4">
-  <div class="p-3 text-primary-emphasis bg-success-subtle border border-primary-subtle rounded-3">
-  Oбговорення на гілці "{{data.branch.title}}"
-</div>
-
-  <div class="mb-4" style="border: 1px solid #dee2e6; border-radius: 12px; padding: 1rem; background-color: #f8f9fa;">
-    {% if data.comments %}
-      {% for comment_data in data.comments %}
-        <div class="d-flex mb-3 {% if comment_data.comment.user == request.user %}justify-content-end{% else %}justify-content-start{% endif %}">
-          {% if comment_data.comment.user != request.user %}
-            <img src="{{ comment_data.comment.user.avatar.url }}" class="rounded-circle me-2" width="45" height="45" alt="avatar">
-          {% endif %}
-          <div class="p-2 rounded-4 shadow-sm"
-               style="background-color: {% if comment_data.comment.user == request.user %}#d1e7dd{% else %}#ffffff{% endif %}; max-width: 70%;">
-            <p class="mb-1 fw-semibold">{{ comment_data.comment.user.username }}</p>
-            <p class="mb-1">{{ comment_data.comment.description }}</p>
-            <div class="d-flex justify-content-between align-items-center text-muted small">
-              <span><i class="bi bi-clock me-1"></i>{{ comment_data.comment.created_at }}</span>
-              <span>
-                <span class="badge bg-primary me-1"><i class="bi bi-hand-thumbs-up"></i> {{ comment_data.like_count }}</span>
-                <span class="badge bg-secondary"><i class="bi bi-hand-thumbs-down"></i> {{ comment_data.dislike_count }}</span>
-              </span>
+    <div class="border rounded p-3 bg-light mb-3">
+      {% if data.comments %}
+        {% for comment_data in data.comments %}
+          <div class="d-flex mb-3 {% if comment_data.comment.user == request.user %}justify-content-end{% else %}justify-content-start{% endif %}">
+            {% if comment_data.comment.user != request.user %}
+              <img src="{{ comment_data.comment.user.avatar.url }}" class="rounded-circle me-2" width="45" height="45" alt="avatar">
+            {% endif %}
+            <div class="p-3 rounded shadow-sm"
+                 style="background-color: {% if comment_data.comment.user == request.user %}#d1e7dd{% else %}#ffffff{% endif %}; max-width: 70%;">
+              <p class="mb-1 fw-semibold">{{ comment_data.comment.user.username }}</p>
+              <p class="mb-1">{{ comment_data.comment.description }}</p>
+              <div class="d-flex justify-content-between align-items-center text-muted small">
+                <span><i class="bi bi-clock me-1"></i>{{ comment_data.comment.created_at }}</span>
+                <span>
+                  <span class="badge bg-primary me-1"><i class="bi bi-hand-thumbs-up"></i> {{ comment_data.like_count }}</span>
+                  <span class="badge bg-secondary"><i class="bi bi-hand-thumbs-down"></i> {{ comment_data.dislike_count }}</span>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      {% endfor %}
-    {% else %}
-      <p class="text-center text-muted">Почати обговорення 💤</p>
-    {% endif %}
-  </div>
-
-  <!-- 📨 Форма коментаря у стилі месенджера -->
-  <form method="POST" action="{% url 'comment_create' data.branch.pk %}" class="bg-white shadow-sm rounded-pill px-3 py-2 d-flex align-items-center">
-    {% csrf_token %}
-    <div class="flex-grow-1 me-2">
-      {{ form.description}}
+        {% endfor %}
+      {% else %}
+        <p class="text-center text-muted">Почати обговорення 💤</p>
+      {% endif %}
     </div>
-    <button type="submit" class="btn btn-primary d-flex justify-content-center align-items-center"
-        style="width: 48px; height: 48px; border-radius: 50%;">
-  <i class="bi bi-send-fill"></i>
-</button>
 
+    <!-- Форма коментаря -->
+    <form method="POST" action="{% url 'comment_create' data.branch.pk %}"
+          class="bg-white shadow-sm rounded-pill px-3 py-2 d-flex align-items-center mb-3">
+      {% csrf_token %}
+      <div class="flex-grow-1 me-2">{{ form.description }}</div>
+      <button type="submit"
+              class="btn btn-primary d-flex justify-content-center align-items-center"
+              style="width:48px; height:48px; border-radius:50%;">
+        <i class="bi bi-send-fill"></i>
+      </button>
+    </form>
 
-  </form>
-
-  <!-- 🗑 Кнопка видалення гілки -->
-  <form method="post" action="{% url 'branch_delete' data.branch.pk %}" class="mt-4 text-center">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-outline-danger rounded-pill px-4">
-      <i class="bi bi-trash3-fill"></i> Видалити гілку
-    </button>
-  </form>
+    <!-- Видалення гілки -->
+    <form method="post" action="{% url 'branch_delete' data.branch.pk %}" class="text-center">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-danger rounded-pill px-4">
+        <i class="bi bi-trash3-fill"></i> Видалити гілку
+      </button>
+    </form>
+  </div>
 </div>
 
-
-
-    <!-- Коментарі -->
-<!--    <div class = "d-flex justify-content-end">-->
-<!--    <div class="mb-5" style="max-height: 400px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 12px; padding: 1rem; background-color: #f8f9fa;">-->
-<!--        {% if data.comments %}-->
-<!--            {% for comment_data in data.comments %}-->
-<!--                <div class="d-flex align-items-start gap-3">-->
-<!--              &lt;!&ndash; Аватар &ndash;&gt;-->
-<!--              <img src="{{ comment.user.avatar.url }}" alt="avatar" class="rounded-circle" width="50" height="50">-->
-<!--                <div class="mb-3 p-2 rounded shadow-sm">-->
-<!--                    <p class="mb-1"><strong>{{ comment_data.comment.user.username }}</strong></p>-->
-<!--                    <p class="mb-1">{{ comment_data.comment.description }}</p>-->
-<!--                    <div class="d-flex justify-content-between align-items-center text-muted small">-->
-<!--                        <span><i class="bi bi-clock me-1"></i>{{ comment_data.comment.created_at }}</span>-->
-<!--                        <span>-->
-<!--                            <span class="badge bg-primary me-1"><i class="bi bi-hand-thumbs-up"></i> {{ comment_data.like_count }}</span>-->
-<!--                            <span class="badge bg-secondary"><i class="bi bi-hand-thumbs-down"></i> {{ comment_data.dislike_count }}</span>-->
-<!--                        </span>-->
-<!--                    </div>-->
-<!--                </div></div></div>-->
-<!--            {% endfor %}-->
-<!--        {% else %}-->
-<!--            <p class="text-center text-muted">Коментарів ще немає 💤</p>-->
-<!--        {% endif %}-->
-<!--    </div>-->
-
-
-<!--    &lt;!&ndash; Форма як у месенджері &ndash;&gt;-->
-<!--    <form method="POST" action="{% url 'comment_create' data.branch.pk %}" class="sticky-bottom bg-white shadow rounded-pill px-1 py-1 d-flex align-items-center">-->
-<!--        {% csrf_token %}-->
-<!--        <div class="flex-grow-1 me-2">-->
-<!--            {{ form.description }}-->
-
-<!--        </div>-->
-<!--        <button type="submit" class="btn btn-primary rounded-circle">-->
-<!--            <i class="bi bi-send-fill"></i>-->
-<!--        </button>-->
-<!--    </form>-->
-
-<!--    &lt;!&ndash; Кнопка видалення &ndash;&gt;-->
-<!--    <form method="post" action="{% url 'branch_delete' data.branch.pk %}" class="mt-4 text-center rounded-pill">-->
-<!--        {% csrf_token %}-->
-<!--        <button type="submit" class="btn btn-outline-danger w-50">-->
-<!--            <i class="bi bi-trash3-fill"></i> Видалити гілку-->
-<!--        </button>-->
-<!--    </form>-->
-<!--</div>-->
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
-
-<!-- UIkit CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/css/uikit.min.css" />
-
-<!-- UIkit JS -->
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/js/uikit.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/js/uikit-icons.min.js"></script>
