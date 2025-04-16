@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'main',
     'event_calendar',
     'profilemenu',
+    'crispy_forms',
 
 ]
 LOGIN_REDIRECT_URL = '/main/'
@@ -149,3 +150,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"

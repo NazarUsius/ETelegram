@@ -1,22 +1,31 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% load crispy_forms_tags %}
 
+{% block content %}
     <!-- Центрируем форму -->
     <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-sm p-4" style="width: 400px; border-radius: 15px;">
-            <h3 class="text-center mb-3 text-success">Вхід</h3>
+        <div class="card shadow-lg p-5" style="width: 500px; border-radius: 20px;">
+            <h3 class="text-center mb-4 text-success" style="font-size: 2rem;">Вхід</h3>
             <form method="post">
                 {% csrf_token %}
 
-                <input type="text" name="username" placeholder="Ім'я користувача" class="custom-input" required>
-                <input type="password" name="password" placeholder="Пароль" class="custom-input" required>
-                <button type="submit" class="btn btn-outline-success w-100">Увійти</button>
+                <div class="mb-4">
+                    <label for="username" class="form-label" style="font-size: 1.2rem;">Ім'я користувача</label>
+                    <input type="text" name="username" id="username" class="form-control form-control-lg" placeholder="Ім'я користувача" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label" style="font-size: 1.2rem;">Пароль</label>
+                    <input type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Пароль" required>
+                </div>
+
+                <button type="submit" class="btn btn-outline-success w-100 btn-lg" style="font-size: 1.2rem;">Увійти</button>
             </form>
-            <div class="text-center mt-3">
-                <a href="{% url 'register' %}" class="text-success">Ще не маєте акаунта? Зареєструйтесь</a>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'register' %}" class="text-success" style="font-size: 1.1rem;">Ще не маєте акаунта? Зареєструйтесь</a>
             </div>
         </div>
     </div>
-
 {% endblock %}
