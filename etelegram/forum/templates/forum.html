@@ -3,77 +3,51 @@
 
 {% block content %}
 
-    <div class="container py-5">
+<div class="container py-5">
 
-        <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap">
-            <h2 class="mb-0 text-primary" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">🌟 Форумні Гілки</h2>
-            <a href="{% url 'branch_create' %}" class="btn btn-gradient btn-lg shadow-lg px-4 py-2 d-flex align-items-center gap-2">
-                <i class="bi bi-plus-circle-fill"></i> Створити гілку
-            </a>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap">
+        <h2 class="mb-0 text-primary" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            🌐 Обговорення & Гілки
+        </h2>
+        <a href="{% url 'branch_create' %}" class="btn btn-gradient btn-lg shadow-lg px-4 py-2 d-flex align-items-center gap-2">
+            <i class="bi bi-plus-circle-fill"></i> ➕ Нова гілка
+        </a>
+    </div>
 
-        <div class="row justify-content-center">
-            {% for data in branch_data %}
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card shadow-sm border-light rounded-3 h-100 transition-all hover-zoom-in" style="max-width: 100%; min-height: 350px;">
-                        <div class="card-body d-flex flex-column h-100">
-                            <h5 class="card-title text-success mb-3">{{ data.branch.title }}</h5>
-                            <p class="card-text flex-grow-1">{{ data.branch.description }}</p>
+    <div class="row justify-content-center">
+        {% for data in branch_data %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm border-light rounded-3 h-100 transition-all hover-zoom-in" style="max-width: 100%; min-height: 350px;">
+                    <div class="card-body d-flex flex-column h-100">
+                        <h5 class="card-title text-success mb-2">📌 {{ data.branch.title }}</h5>
+                        <p class="card-text flex-grow-1">{{ data.branch.description }}</p>
 
-                            {% if data.branch.media %}
-                                <img src="{{ data.branch.media.url }}" class="img-fluid rounded mb-3" alt="image" style="height: 200px; object-fit: cover;">
-                            {% endif %}
+                        {% if data.branch.media %}
+                            <img src="{{ data.branch.media.url }}" class="img-fluid rounded mb-3" alt="image" style="height: 200px; object-fit: cover;">
+                        {% endif %}
 
-                            <p class="text-muted"><small>🕒 {{ data.branch.created_at }}</small></p>
+                        <p class="text-muted"><small>🗓️ {{ data.branch.created_at }}</small></p>
 
-                            <div class="d-flex justify-content-start gap-3 mb-3">
-                                <span class="badge bg-success">👍 {{ data.likes }}</span>
-                                <span class="badge bg-danger">👎 {{ data.dislikes }}</span>
-                            </div>
-
-                            <a href="{% url 'branch_detail' data.branch.pk %}" class="btn btn-outline-primary btn-sm mb-3">
-                                Детальніше
-                            </a>
-
-                            <div class="accordion" id="accordion-{{ forloop.counter }}">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#comments-{{ forloop.counter }}" aria-expanded="false">
-                                            💬 Коментарі
-                                        </button>
-                                    </h2>
-                                    <div id="comments-{{ forloop.counter }}" class="accordion-collapse collapse">
-                                        <div class="accordion-body">
-                                            {% if data.comments %}
-                                                {% for comment_data in data.comments %}
-                                                    <div class="border-start ps-3 mb-3">
-                                                        <p><strong>{{ comment_data.comment.user.username }}</strong>:
-                                                            {{ comment_data.comment.description }}</p>
-                                                        <p class="text-muted"><small>🕒 {{ comment_data.comment.created_at }}</small></p>
-                                                        <div class="d-flex gap-2">
-                                                            <span class="badge bg-primary">👍 {{ comment_data.like_count }}</span>
-                                                            <span class="badge bg-secondary">👎 {{ comment_data.dislike_count }}</span>
-                                                        </div>
-                                                    </div>
-                                                {% endfor %}
-                                            {% else %}
-                                                <p class="text-muted">Коментарів ще немає.</p>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div class="d-flex justify-content-start gap-3 mb-3">
+                            <span class="badge bg-success">👍 {{ data.likes }}</span>
+                            <span class="badge bg-danger">👎 {{ data.dislikes }}</span>
                         </div>
+
+                        <a href="{% url 'branch_detail' data.branch.pk %}" class="btn btn-outline-primary btn-sm mb-3">
+                            🔍 Детальніше
+                        </a>
+
+
+
                     </div>
                 </div>
-            {% empty %}
-                <div class="alert alert-info text-center animate__animated animate__fadeIn">
-                    <h4>😢 Поки що немає дописів</h4>
-                </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-info text-center animate__animated animate__fadeIn">
+                <h4>😢 Поки що немає дописів</h4>
+            </div>
+        {% endfor %}
     </div>
+</div>
 
 {% endblock %}
