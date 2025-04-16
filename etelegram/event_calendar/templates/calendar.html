@@ -97,6 +97,7 @@
           <strong>${event.summary || 'Без назви'}</strong><br>
           <span class="event-time">${new Date(event.start).toLocaleString()} - ${new Date(event.end).toLocaleString()}</span><br>
           <p class="event-description">${event.description || 'Без опису'}</p>
+          <p class="event_id">id - ${event.id}</p>
           <a href="${event.link}" target="_blank">Відкрити в Google Calendar</a>
         `;
         eventList.appendChild(li);
