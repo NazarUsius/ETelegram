@@ -44,6 +44,49 @@ class QuizCreateView(CreateView):
     def get_success_url(self):
         return reverse("quiz_list")
 
+class SectionCreateView(CreateView):
+    model = Section
+    template_name = "section_create.html"
+    form_class = SectionForm
+    success_url = '/quiz/'
+
+    def form_valid(self, form):
+        quiz = Quiz.objects.get(pk=self.kwargs['pk'])
+        form.instance.quiz = quiz
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("quiz_list")
+
+
+class QuestionCreateView(CreateView):
+    model = Question
+    template_name = "question_create.html"
+    form_class = QuestionForm
+    success_url = '/quiz/'
+
+    def form_valid(self, form):
+        section = Section.objects.get(pk=self.kwargs['pk'])
+        form.instance.section = section
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("quiz_list")
+
+class AnswerCreateView(CreateView):
+    model = Answer
+    template_name = "answer_create.html"
+    form_class = AnswerForm
+    success_url = '/quiz/'
+
+    def form_valid(self, form):
+        question = Question.objects.get(pk=self.kwargs['pk'])
+        form.instance.question = question
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("quiz_list")
+
 
 
 
