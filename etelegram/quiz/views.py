@@ -42,7 +42,7 @@ class QuizCreateView(CreateView):
     success_url = '/quiz/'
 
     def get_success_url(self):
-        return reverse("quiz_list")
+        return reverse("quiz_setting", kwargs={"pk": self.object.pk})
 
 class SectionCreateView(CreateView):
     model = Section
@@ -51,12 +51,12 @@ class SectionCreateView(CreateView):
     success_url = '/quiz/'
 
     def form_valid(self, form):
-        quiz = Quiz.objects.get(pk=self.kwargs['pk'])
+        quiz = Quiz.objects.get(pk=self.kwargs['quiz_pk'])
         form.instance.quiz = quiz
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse("quiz_list")
+        return reverse("quiz_setting", kwargs={'pk': self.kwargs['quiz_pk']})
 
 
 class QuestionCreateView(CreateView):
@@ -66,12 +66,12 @@ class QuestionCreateView(CreateView):
     success_url = '/quiz/'
 
     def form_valid(self, form):
-        section = Section.objects.get(pk=self.kwargs['pk'])
+        section = Section.objects.get(pk=self.kwargs['section_pk'])
         form.instance.section = section
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse("quiz_list")
+        return reverse("quiz_setting", kwargs={'pk': self.kwargs['quiz_pk']})
 
 class AnswerCreateView(CreateView):
     model = Answer
@@ -80,13 +80,17 @@ class AnswerCreateView(CreateView):
     success_url = '/quiz/'
 
     def form_valid(self, form):
-        question = Question.objects.get(pk=self.kwargs['pk'])
+        question = Question.objects.get(pk=self.kwargs['question_pk'])
         form.instance.question = question
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse("quiz_list")
+        return reverse("quiz_setting", kwargs={'pk': self.kwargs['quiz_pk']})
 
 
+class QuizSettingView(DetailView):
+    model = Quiz
+    template_name = "quiz_setting.html"
+    context_object_name = "quiz"
 
 
