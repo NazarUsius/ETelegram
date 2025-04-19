@@ -35,5 +35,15 @@ class QuizDetailView(DetailView):
         context["data"] = data
         return context
 
+class QuizCreateView(CreateView):
+    model = Quiz
+    template_name = "quiz_create.html"
+    form_class = QuizForm
+    success_url = '/quiz/'
+
+    def get_success_url(self):
+        return reverse("quiz_list")
+
+
 
 

@@ -1,7 +1,7 @@
 from django import forms
 from .models import *
 
-class QuizForm(forms.Form):
+class QuizForm(forms.ModelForm):
     title = forms.CharField(max_length=15)
     description = forms.CharField(max_length=25, required=False)
     rating = forms.IntegerField(required=False)
@@ -10,7 +10,7 @@ class QuizForm(forms.Form):
         model = Quiz
         fields = ["title", "description", "rating"]
 
-class SectionForm(forms.Form):
+class SectionForm(forms.ModelForm):
     title = forms.CharField(max_length=15)
     description = forms.CharField(max_length=25, required=False)
 
@@ -18,7 +18,7 @@ class SectionForm(forms.Form):
         model = Section
         fields = ["title", "description"]
 
-class QuestionForm(forms.Form):
+class QuestionForm(forms.ModelForm):
     KINDS_OF_QUESTION = [("tf", "Text fill"), ("c", "Choice")]
 
     title = forms.CharField(max_length=25)
@@ -27,7 +27,7 @@ class QuestionForm(forms.Form):
         model = Question
         fields = ["title", "kind"]
 
-class AnswerForm(forms.Form):
+class AnswerForm(forms.ModelForm):
     KINDS_OF_ANSWER = [("c", "Correct"), ("i", "Incorrect")]
 
     title = forms.CharField(max_length=25)
