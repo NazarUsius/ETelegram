@@ -127,19 +127,16 @@ def section_view(request, session_id, section_id):
                 else:
                     incorrect_answers += 1
 
-                # Сохраняем ответ пользователя
                 UserAnswer.objects.update_or_create(
                     session=session,
                     question=question,
                     defaults={'selected_answer_id': selected_answer.id}
                 )
 
-        # Переход к следующей секции
         next_section = Section.objects.filter(quiz=session.quiz, id__gt=section.id).first()
         if next_section:
             return redirect('section_view', session_id=session.id, section_id=next_section.id)
         else:
-            # Завершаем сессию, если это последняя секция
             session.finished_at = timezone.now()
             session.save()
             return redirect('quiz_result', session_id=session.id)
