@@ -7,8 +7,6 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-def landing_page(request):
-    return render(request, 'landing.html')
 
 def get_post_data(branch):
     branch_likes = LikeBranch.objects.filter(branch=branch)
