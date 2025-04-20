@@ -44,6 +44,8 @@ GOOGLE_CREDENTIALS = json.loads(GOOGLE_CREDENTIALS_JSON)
 GOOGLE_CALENDAR_ID = os.getenv("GOOGLE_CALENDAR_ID")
 
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -61,6 +63,7 @@ INSTALLED_APPS = [
     'quiz',
     'profilemenu',
     'crispy_forms',
+    'diary',
 
 ]
 LOGIN_REDIRECT_URL = '/main/'

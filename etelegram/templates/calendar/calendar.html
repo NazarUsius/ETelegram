@@ -1,3 +1,4 @@
+{% extends 'base/_base.html' %}
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -72,7 +73,7 @@
     }
   </style>
 </head>
-<body>
+{% block content %}
   <div class="container">
     <h1>Події в Google Calendar</h1>
 
@@ -107,5 +108,5 @@
       eventList.innerHTML = "<li>Немає подій для відображення.</li>";
     }
   </script>
-</body>
+{% endblock %}
 </html>

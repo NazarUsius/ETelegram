@@ -33,7 +33,7 @@ def create_event_view(request):
     else:
         form = EventForm()
 
-    return render(request, 'create.html', {'form': form})
+    return render(request, 'calendar/create.html', {'form': form})
 
 
 
@@ -46,7 +46,7 @@ def delete_event_view(request, event_id):
             messages.error(request, f"Помилка при видаленні: {e}")
         return redirect('list_events')  # Перенаправляє назад до списку подій
 
-    return render(request, "delete.html", {"event_id": event_id})
+    return render(request, "calendar/delete.html", {"event_id": event_id})
 
 
 def list_events_view(request):
@@ -63,4 +63,4 @@ def list_events_view(request):
             'link': event.get('htmlLink'),
         })
 
-    return render(request, 'calendar.html', {'json_data': simplified})
+    return render(request, 'calendar/calendar.html', {'json_data': simplified})
