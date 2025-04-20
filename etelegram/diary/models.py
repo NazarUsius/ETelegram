@@ -17,11 +17,11 @@ class EvaluationType(models.TextChoices):
     OTHER = 'Інше'
 
 class Grade(models.Model):
-    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='grades', on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     date = models.DateField()
     evaluation_type = models.CharField(max_length=50, choices=EvaluationType.choices)
     grade = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return f"{self.student} - {self.subject}: {self.grade}"
+        return f"{self.user} - {self.subject}: {self.grade}"

@@ -18,8 +18,8 @@
     <tbody>
       {% for grade in grades %}
       <tr>
-        <td>{{ grade.student.user.get_full_name }}</td>
-        <td>{{ grade.student.school_class.name }}</td>
+        <td>{{ grade.user.username }}</td>
+        <td>{{ grade.user.group }}</td>
         <td>{{ grade.subject.name }}</td>
         <td>{{ grade.get_evaluation_type_display }}</td>
         <td>{{ grade.grade }}</td>
