@@ -1,0 +1,34 @@
+{% extends 'base/_base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100" style="background-color: transparent;">
+    <div class="card shadow-lg p-5" style="width: 400px; border-radius: 20px; background-color: white;">
+        <h3 class="text-center mb-4 text-success" style="font-size: 2rem;">Реєстрація</h3>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label for="username" class="form-label" style="font-size: 1.2rem;">Ім'я користувача</label>
+                {{ form.username|add_class:"form-control form-control-lg" }}
+            </div>
+
+            <div class="mb-4">
+                <label for="password1" class="form-label" style="font-size: 1.2rem;">Пароль</label>
+                {{ form.password1|add_class:"form-control form-control-lg" }}
+            </div>
+
+            <div class="mb-4">
+                <label for="password2" class="form-label" style="font-size: 1.2rem;">Підтвердження паролю</label>
+                {{ form.password2|add_class:"form-control form-control-lg" }}
+            </div>
+
+            <button type="submit" class="btn btn-outline-success w-100 btn-lg" style="font-size: 1.2rem;">Зареєструватися</button>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'login' %}" class="text-success" style="font-size: 1.1rem;">Вже маєте акаунт? Увійти</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

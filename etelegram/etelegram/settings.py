@@ -43,6 +43,9 @@ GOOGLE_CREDENTIALS = json.loads(GOOGLE_CREDENTIALS_JSON)
 
 GOOGLE_CALENDAR_ID = os.getenv("GOOGLE_CALENDAR_ID")
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 
 # Application definition
 
@@ -61,6 +64,8 @@ INSTALLED_APPS = [
     'quiz',
     'profilemenu',
     'crispy_forms',
+    'diary',
+    'crispy_bootstrap5',
 
 ]
 LOGIN_REDIRECT_URL = '/main/'
