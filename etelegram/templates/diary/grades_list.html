@@ -1,0 +1,37 @@
+{% extends 'base/_base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Список оцінок</h2>
+
+  <table class="table table-dark table-bordered table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th>Учень</th>
+        <th>Клас</th>
+        <th>Предмет</th>
+        <th>Тип</th>
+        <th>Оцінка</th>
+        <th>Дата</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for grade in grades %}
+      <tr>
+        <td>{{ grade.student.user.get_full_name }}</td>
+        <td>{{ grade.student.school_class.name }}</td>
+        <td>{{ grade.subject.name }}</td>
+        <td>{{ grade.get_evaluation_type_display }}</td>
+        <td>{{ grade.grade }}</td>
+        <td>{{ grade.date }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center">Оцінок ще немає.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
