@@ -7,5 +7,4 @@ def home_view(request):
     groups = Group.objects.all().prefetch_related('user_set')
     return render(request, 'main.html', {'groups': groups})
 
-def landing_page(request):
-    return render(request, 'landing.html')
+
