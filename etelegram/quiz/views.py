@@ -14,7 +14,7 @@ def get_quiz_data(quiz):
 
 class QuizListView(ListView):
     model = Quiz
-    template_name = "quiz.html"
+    template_name = "quiz/quiz.html"
     context_object_name = "quiz_data"
 
     def get_context_data(self, **kwargs):
@@ -27,7 +27,7 @@ class QuizListView(ListView):
 
 class QuizDetailView(DetailView):
     model = Quiz
-    template_name = "quiz_detail.html"
+    template_name = "quiz/quiz_detail.html"
     context_object_name = "quiz"
 
     def get_context_data(self, **kwargs):
@@ -40,7 +40,7 @@ class QuizDetailView(DetailView):
 
 class QuizCreateView(CreateView):
     model = Quiz
-    template_name = "quiz_create.html"
+    template_name = "quiz/quiz_create.html"
     form_class = QuizForm
     success_url = '/quiz/'
 
@@ -49,7 +49,7 @@ class QuizCreateView(CreateView):
 
 class SectionCreateView(CreateView):
     model = Section
-    template_name = "section_create.html"
+    template_name = "quiz/section_create.html"
     form_class = SectionForm
     success_url = '/quiz/'
 
@@ -64,7 +64,7 @@ class SectionCreateView(CreateView):
 
 class QuestionCreateView(CreateView):
     model = Question
-    template_name = "question_create.html"
+    template_name = "quiz/question_create.html"
     form_class = QuestionForm
     success_url = '/quiz/'
 
@@ -78,7 +78,7 @@ class QuestionCreateView(CreateView):
 
 class AnswerCreateView(CreateView):
     model = Answer
-    template_name = "answer_create.html"
+    template_name = "quiz/answer_create.html"
     form_class = AnswerForm
     success_url = '/quiz/'
 
@@ -93,7 +93,7 @@ class AnswerCreateView(CreateView):
 
 class QuizSettingView(DetailView):
     model = Quiz
-    template_name = "quiz_setting.html"
+    template_name = "quiz/quiz_setting.html"
     context_object_name = "quiz"
 
 #answering the test
@@ -144,7 +144,7 @@ def section_view(request, session_id, section_id):
             session.save()
             return redirect('quiz_result', session_id=session.id)
 
-    return render(request, 'section.html', {
+    return render(request, 'quiz/section.html', {
         'section': section,
         'questions': questions,
         'session': session
@@ -157,7 +157,7 @@ def quiz_result(request, session_id):
     correct_count = sum(1 for ans in answers if ans.selected_answer and ans.selected_answer.correctness == "c")
     total = answers.count()
 
-    return render(request, 'test_result.html', {
+    return render(request, 'quiz/test_result.html', {
         'correct': correct_count,
         'total': total,
     })

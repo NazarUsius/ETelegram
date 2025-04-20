@@ -1,0 +1,30 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block content %}
+<br><br>
+
+<h2>{{ section.title }}</h2>
+
+
+<form method="post">
+  {% csrf_token %}
+
+  {% for question in questions %}
+    <div>
+      <p><strong>{{ question.title }}</strong></p>
+
+      {% for answer in question.answer_set.all %}
+        <label>
+          <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
+          {{ answer.title }}
+        </label><br>
+      {% endfor %}
+    </div>
+  {% endfor %}
+
+  <br>
+  <button type="submit" class="btn btn-primary">Продолжить</button>
+</form>
+
+{% endblock %}
