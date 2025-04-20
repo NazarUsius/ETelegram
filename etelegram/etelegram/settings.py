@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'forum',
     'main',
     'event_calendar',
+    'quiz',
     'profilemenu',
     'crispy_forms',
     'diary',

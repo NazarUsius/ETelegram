@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<h2>Settings for Quiz: {{ quiz.title }}</h2>
+
+<!-- Link to create a Section -->
+<a href="{% url 'section_create' quiz_pk=quiz.pk %}">
+    <button type="button">Add Section</button>
+</a>
+
+<!-- Link to create a Question (you need a section_pk as well) -->
+{% for section in quiz.section_set.all %}
+    <a href="{% url 'question_create' quiz_pk=quiz.pk section_pk=section.pk %}">
+        <button type="button">Add Question to {{ section.title }}</button>
+    </a>
+{% endfor %}
+
+<!-- Link to create an Answer (you need both quiz_pk and section_pk) -->
+{% for section in quiz.section_set.all %}
+    {% for question in section.question_set.all %}
+        <a href="{% url 'answer_create' quiz_pk=quiz.pk section_pk=section.pk question_pk=question.pk %}">
+    <button type="button">Add Answer to {{ question.title }}</button>
+</a>
+
+    {% endfor %}
+{% endfor %}
+
+{% for section in quiz.section_set.all %}
+    {% for question in section.question_set.all %}
+        {% for answer in question.answer_set.all %}
+            {{ answer.title }}
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
+{% endblock %}
