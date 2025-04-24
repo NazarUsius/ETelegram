@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from django.db import models
@@ -17,7 +18,7 @@ class EvaluationType(models.TextChoices):
     OTHER = 'Інше'
 
 class Grade(models.Model):
-    user = models.ForeignKey(User, related_name='grades', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='grades', on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     date = models.DateField()
     evaluation_type = models.CharField(max_length=50, choices=EvaluationType.choices)

@@ -1,16 +1,16 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model
 from .forms import CustomUserCreationForm
-from profilemenu.models import UserProfile
+
+User = get_user_model()
+
 def register_view(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save()
-            group = form.cleaned_data['group']
-            group.user_set.add(user)
-            UserProfile.objects.create(user=user, group=group)
+            form.save()
             return redirect('login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
+

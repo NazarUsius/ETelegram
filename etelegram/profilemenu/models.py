@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 
 class UserProfile(models.Model):
     GENDER_CHOICES = [
@@ -8,7 +8,6 @@ class UserProfile(models.Model):
         ('other', 'Інше'),
     ]
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     avatar = models.ImageField(upload_to='avatars/', default='avatars/default.png')
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
