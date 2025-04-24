@@ -13,25 +13,25 @@
             <div class="flex-grow-1 me-4">
               <p class="mb-2"><strong>Імʼя користувача:</strong> {{ user.username }}</p>
               <p class="mb-2"><strong>Група:</strong>
-                {% if profile.group %}
-                  {{ profile.group.name }}
+                {% if user.group %}
+                  {{ user.group.name }}
                 {% else %}
                   Не вказано
                 {% endif %}
               </p>
-              <p class="mb-2"><strong>Дата народження:</strong> {{ profile.birth_date|default:"Не вказано" }}</p>
-              <p class="mb-2"><strong>Електронна пошта:</strong> {{ profile.email|default:"Не вказано" }}</p>
+              <p class="mb-2"><strong>Дата народження:</strong> {{ user.birth_date|default:"Не вказано" }}</p>
+              <p class="mb-2"><strong>Електронна пошта:</strong> {{ user.email|default:"Не вказано" }}</p>
               <p class="mb-0"><strong>Стать:</strong>
-                {% if profile.gender == 'male' %}Чоловік
-                {% elif profile.gender == 'female' %}Жінка
-                {% elif profile.gender == 'other' %}Інше
+                {% if user.gender == 'male' %}Чоловік
+                {% elif user.gender == 'female' %}Жінка
+                {% elif user.gender == 'other' %}Інше
                 {% else %}Не вказано
                 {% endif %}
               </p>
             </div>
             <div class="text-end">
-              {% if profile.avatar %}
-                <img src="{{ profile.avatar.url }}" alt="Фото профілю" class="rounded-circle shadow" style="width: 140px; height: 140px; object-fit: cover;">
+              {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="Фото профілю" class="rounded-circle shadow" style="width: 140px; height: 140px; object-fit: cover;">
               {% else %}
                 <img src="{% static 'images/default-avatar.png' %}" alt="Фото профілю" class="rounded-circle shadow" style="width: 140px; height: 140px; object-fit: cover;">
               {% endif %}
