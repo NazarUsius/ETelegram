@@ -29,4 +29,5 @@ urlpatterns = [
     path('profile/', include('profilemenu.urls')),
     path('diary/', include('diary.urls')),
     path('quiz/', include("quiz.urls")),
+    path('galary/', include("galary.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
