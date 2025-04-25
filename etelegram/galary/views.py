@@ -14,6 +14,9 @@ def media_add_view(request):
             return redirect('media_list')
     else:
         form = MediaForm()
+    return render(request, 'galary/media_add.html', {'form': form})
+
+
 
 
 
