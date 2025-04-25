@@ -36,3 +36,15 @@ def media_verify_view(request):
         media = Media.objects.filter(verified = False)
 
         return render(request, 'galary/media_verify_list.html', {'media_list': media})
+    
+
+def verify_media(request, media_id):
+    if not request.user.is_staff:
+        return render(request, 'base/403.html')
+    else:
+        media = Media.objects.get(pk=media_id)
+        media.verified = True
+        media.save()
+        return redirect('media_verify')
+
+

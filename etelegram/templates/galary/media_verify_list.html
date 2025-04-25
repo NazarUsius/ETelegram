@@ -19,6 +19,7 @@
         <p>Description: {{ media.description }}</p>
         <p>Author: {{ media.author.username }}</p>
         <p>Created at: {{ media.created_at }}</p>
+        <a href="{% url 'verify_media' media_id=media.id %}" class="btn btn-primary">Verify</a>
       </li>
     
     {% endfor %}
