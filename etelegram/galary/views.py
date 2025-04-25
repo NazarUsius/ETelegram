@@ -1,9 +1,10 @@
 from django.shortcuts import redirect, render
-
+from django.contrib.auth.decorators import login_required
 from .models import Media
 
 from .forms import MediaForm
 
+@login_required
 def media_add_view(request):
     if request.method == 'POST':
         form = MediaForm(request.POST, request.FILES)
@@ -19,7 +20,7 @@ def media_add_view(request):
 
 
 
-
+@login_required
 def media_list_view(request):
     media = Media.objects.all()
 
