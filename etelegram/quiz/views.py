@@ -134,6 +134,15 @@ def section_view(request, session_id, section_id):
                         defaults={'selected_answer_id': selected_answer.id}
                     )
 
+            elif question.kind == "tf":
+                text_response = request.POST.get(f"question_{question.id}_text")
+                if text_response:
+                    UserAnswer.objects.update_or_create(
+                        session=session,
+                        question=question,
+                        defaults={'text_response': text_response}
+                    )
+
         next_section = Section.objects.filter(quiz=session.quiz, id__gt=section.id).first()
         if next_section:
             return redirect('section_view', session_id=session.id, section_id=next_section.id)
@@ -150,14 +159,22 @@ def section_view(request, session_id, section_id):
 
 
 def quiz_result(request, session_id):
-    session = get_object_or_404(Session, id = session_id, user = request.user)
-    answers = UserAnswer.objects.filter(session = session)
-    correct_count = sum(1 for ans in answers if ans.selected_answer and ans.selected_answer.correctness == "c")
+    session = get_object_or_404(Session, id=session_id, user=request.user)
+    answers = UserAnswer.objects.filter(session=session)
+    correct_count = 0
     total = answers.count()
+
+    for ans in answers:
+        if ans.selected_answer:
+            if ans.selected_answer.correctness == "c":
+                correct_count += 1
+        elif ans.text_response:
+            correct_ans = Answer.objects.filter(question = ans.question, correctness = "c").first()
+            if ans.text_response.strip().lower() == correct_ans.title.strip().lower():
+                correct_count += 1
 
     return render(request, 'quiz/test_result.html', {
         'correct': correct_count,
         'total': total,
     })
-
 

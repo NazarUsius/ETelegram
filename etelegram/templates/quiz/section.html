@@ -1,41 +1,22 @@
-{% extends 'base/_base.html' %}
-{% load static %}
-
-{% block content %}
-<br><br>
-
-<h2>{{ section.title }}</h2>
-
-
 <form method="post">
-  {% csrf_token %}
+    {% csrf_token %}
+    {% for question in questions %}
+        <div>
+            <h4>{{ question.title }}</h4>
 
-  {% for question in questions %}
-    <div>
-      <p><strong>{{ question.title }}</strong></p>
+            {% if question.kind == "c" %}
+                {% for answer in question.answer_set.all %}
+                    <label>
+                        <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
+                        {{ answer.title }}
+                    </label><br>
+                {% endfor %}
+            {% elif question.kind == "tf" %}
+                <input type="text" name="question_{{ question.id }}_text">
+            {% endif %}
+        </div>
+        <hr>
+    {% endfor %}
 
-      {% for answer in question.answer_set.all %}
-        <label>
-          {% if question.kind == "c" %}
-          <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
-          {{ answer.title }}
-          {% endif %}
-          {% if question.kind == "tf" %}
-          <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-
-            <button type="submit">Отправить</button>
-        </form>
-          {% endif %}
-
-        </label><br>
-      {% endfor %}
-    </div>
-  {% endfor %}
-
-  <br>
-  <button type="submit" class="btn btn-primary">Продолжить</button>
+    <button type="submit">Submit</button>
 </form>
-
-{% endblock %}
