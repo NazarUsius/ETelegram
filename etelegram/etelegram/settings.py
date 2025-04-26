@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'diary',
     'crispy_bootstrap5',
     'galary',
+    'voting',
 
 ]
 LOGIN_REDIRECT_URL = '/main/'

@@ -118,28 +118,35 @@ def section_view(request, session_id, section_id):
 
     if request.method == 'POST':
         for question in questions:
-            selected_answer_id = request.POST.get(f"question_{question.id}")
-            if selected_answer_id:
-                selected_answer = Answer.objects.get(id=selected_answer_id)
+            if question.kind == "c":
+                selected_answer_id = request.POST.get(f"question_{question.id}")
+                if selected_answer_id:
+                    selected_answer = Answer.objects.get(id=selected_answer_id)
 
-                if selected_answer.correctness == "c":
-                    correct_answers += 1
-                else:
-                    incorrect_answers += 1
+                    if selected_answer.correctness == "c":
+                        correct_answers += 1
+                    else:
+                        incorrect_answers += 1
 
-                # Сохраняем ответ пользователя
-                UserAnswer.objects.update_or_create(
-                    session=session,
-                    question=question,
-                    defaults={'selected_answer_id': selected_answer.id}
-                )
+                    UserAnswer.objects.update_or_create(
+                        session=session,
+                        question=question,
+                        defaults={'selected_answer_id': selected_answer.id}
+                    )
 
-        # Переход к следующей секции
+            elif question.kind == "tf":
+                text_response = request.POST.get(f"question_{question.id}_text")
+                if text_response:
+                    UserAnswer.objects.update_or_create(
+                        session=session,
+                        question=question,
+                        defaults={'text_response': text_response}
+                    )
+
         next_section = Section.objects.filter(quiz=session.quiz, id__gt=section.id).first()
         if next_section:
             return redirect('section_view', session_id=session.id, section_id=next_section.id)
         else:
-            # Завершаем сессию, если это последняя секция
             session.finished_at = timezone.now()
             session.save()
             return redirect('quiz_result', session_id=session.id)
@@ -152,14 +159,22 @@ def section_view(request, session_id, section_id):
 
 
 def quiz_result(request, session_id):
-    session = get_object_or_404(Session, id = session_id, user = request.user)
-    answers = UserAnswer.objects.filter(session = session)
-    correct_count = sum(1 for ans in answers if ans.selected_answer and ans.selected_answer.correctness == "c")
+    session = get_object_or_404(Session, id=session_id, user=request.user)
+    answers = UserAnswer.objects.filter(session=session)
+    correct_count = 0
     total = answers.count()
+
+    for ans in answers:
+        if ans.selected_answer:
+            if ans.selected_answer.correctness == "c":
+                correct_count += 1
+        elif ans.text_response:
+            correct_ans = Answer.objects.filter(question = ans.question, correctness = "c").first()
+            if ans.text_response.strip().lower() == correct_ans.title.strip().lower():
+                correct_count += 1
 
     return render(request, 'quiz/test_result.html', {
         'correct': correct_count,
         'total': total,
     })
-
 

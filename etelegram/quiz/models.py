@@ -52,8 +52,9 @@ class Session(models.Model):
         return f"{self.user}---{self.quiz}"
 class UserAnswer(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    selected_answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    selected_answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True) # not required is made for text fill questions
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text_response = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.session.user} --- {self.question} ---- {self.selected_answer}"
