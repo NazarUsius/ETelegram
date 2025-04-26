@@ -33,8 +33,8 @@
             </div>
 
             <div class="text-end">
-              {% if user.profile.avatar %}
-                <img src="{{ user.profile.avatar.url }}" alt="Фото профілю" class="rounded-circle shadow" style="width: 150px; height: 150px; object-fit: cover;">
+              {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="Фото профілю" class="rounded-circle shadow" style="width: 150px; height: 150px; object-fit: cover;">
               {% else %}
                 <img src="{% static 'images/default-avatar.png' %}" alt="Фото профілю" class="rounded-circle shadow" style="width: 150px; height: 150px; object-fit: cover;">
               {% endif %}

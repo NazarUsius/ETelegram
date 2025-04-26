@@ -1,0 +1,12 @@
+{% extends 'base/_base.html' %}
+
+{% block content %}
+<div class="container p-5" style="text-align: center;">
+    <h2>Ой, Тебе не має тут бути!</h2>
+
+    <h6>Ти не маєш достатньо прав щоб перебувати на цій сторінці</h6>
+    
+    <a href='{% url 'index' %}' class='btn btn-primary'>Повернутися на головну</a>   
+</div>
+
+{% endblock %}
