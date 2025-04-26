@@ -118,20 +118,21 @@ def section_view(request, session_id, section_id):
 
     if request.method == 'POST':
         for question in questions:
-            selected_answer_id = request.POST.get(f"question_{question.id}")
-            if selected_answer_id:
-                selected_answer = Answer.objects.get(id=selected_answer_id)
+            if question.kind == "c":
+                selected_answer_id = request.POST.get(f"question_{question.id}")
+                if selected_answer_id:
+                    selected_answer = Answer.objects.get(id=selected_answer_id)
 
-                if selected_answer.correctness == "c":
-                    correct_answers += 1
-                else:
-                    incorrect_answers += 1
+                    if selected_answer.correctness == "c":
+                        correct_answers += 1
+                    else:
+                        incorrect_answers += 1
 
-                UserAnswer.objects.update_or_create(
-                    session=session,
-                    question=question,
-                    defaults={'selected_answer_id': selected_answer.id}
-                )
+                    UserAnswer.objects.update_or_create(
+                        session=session,
+                        question=question,
+                        defaults={'selected_answer_id': selected_answer.id}
+                    )
 
         next_section = Section.objects.filter(quiz=session.quiz, id__gt=section.id).first()
         if next_section:

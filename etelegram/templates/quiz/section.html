@@ -16,8 +16,19 @@
 
       {% for answer in question.answer_set.all %}
         <label>
+          {% if question.kind == "c" %}
           <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
           {{ answer.title }}
+          {% endif %}
+          {% if question.kind == "tf" %}
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit">Отправить</button>
+        </form>
+          {% endif %}
+
         </label><br>
       {% endfor %}
     </div>
