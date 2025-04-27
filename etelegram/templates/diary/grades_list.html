@@ -1,8 +1,15 @@
 {% extends 'base/_base.html' %}
 {% block content %}
-
+<form method="get" class="mb-4">
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Фільтрувати</button>
+</form>
 <div class="container mt-5">
   <h2 class="text-center mb-4">Список оцінок</h2>
+<a href="?sort=subject">Сортувати за роботою</a>
+<a href="?sort=date">Сортувати за датою</a>
+<a href="?sort=evaluation_type">Сортувати за предметом</a>
+<a href="?sort=grade">Сортувати за оцінкою</a>
 
   <table class="table table-bordered table-hover">
     <thead class="thead-light">
