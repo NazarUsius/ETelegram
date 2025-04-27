@@ -35,4 +35,10 @@ class Portfolio(models.Model):
         video_extensions = ['.mp4', '.avi', '.mov']
         ext = os.path.splitext(self.media.name)[1].lower()
         return ext in video_extensions
+    
+    class Meta:
+        unique_together = ('user', 'title')
+    
+    def __str__(self):
+        return f"Portfolio: {self.title or self.media.name} by {self.user.username}"
 

@@ -14,8 +14,13 @@ User = get_user_model()
 @login_required
 def profile_view(request, id):
     user = get_object_or_404(User, pk=id)
+    try:
+        portfolio = Portfolio.objects.get(user=user, hided=False)
+    except Portfolio.DoesNotExist:
+        portfolio = None
     return render(request, 'profile/profile.html', {
-        'user': user
+        'user': user,
+        'portfolio': portfolio,
     })
 
 
@@ -51,3 +56,11 @@ def portfolio_create_view(request):
     else:
         form = PortfolioCreateForm()
     return render(request, 'profile/portfolio_create.html', {'form': form})
+
+@login_required
+def portfolio_hide_view(request):
+        portfolio = get_object_or_404(Portfolio, user=request.user)
+        portfolio.hided = True
+        portfolio.save()
+        return redirect('profile', id=request.user.id)  
+    

@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import profile_view, edit_profile_view, portfolio_create_view
+from . import views
 
 urlpatterns = [
-    path('<int:id>', profile_view, name='profile'),
-    path('edit/', edit_profile_view, name='edit_profile'),
-    path('portfolio/create', portfolio_create_view, name='portfolio_create'),
+    path('<int:id>', views.profile_view, name='profile'),
+    path('edit/', views.edit_profile_view, name='edit_profile'),
+    path('portfolio/create', views.portfolio_create_view, name='portfolio_create'),
+    path('portfolio/hide', views.portfolio_hide_view, name='portfolio_hide'),
 ]
