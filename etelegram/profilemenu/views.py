@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import UserProfileForm
+from .forms import UserProfileForm, PortfolioCreateForm
+from .models import Portfolio
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 
@@ -34,3 +35,19 @@ def edit_profile_view(request):
         'user': request.user, 
     }
     return render(request, 'profile/edit_profile.html', context)
+
+
+
+@login_required
+def portfolio_create_view(request):
+    if request.method == 'POST':
+        form = PortfolioCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            portfolio = form.save(commit=False)
+            portfolio.user = request.user
+            portfolio.save()
+            return redirect('profile', id=request.user.id)  
+
+    else:
+        form = PortfolioCreateForm()
+    return render(request, 'profile/portfolio_create.html', {'form': form})
