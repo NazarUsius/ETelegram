@@ -24,7 +24,7 @@
             {{ request.user.username  }}
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href={% url 'profile' %}>Профіль</a></li>
+            <li><a class="dropdown-item" href={% url 'profile' id=request.user.id %}>Профіль</a></li>
             <li>
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}

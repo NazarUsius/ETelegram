@@ -41,6 +41,22 @@
           <div class="mt-4">
             <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary px-4">Редагувати профіль</a>
           </div>
+          <div>
+            <p class="mb-2"><strong>Заголовок:</strong> {{ portfolio.title|default:"Не вказано" }}</p>
+            <p class="mb-2"><strong>Опис:</strong> {{ portfolio.description|default:"Не вказано" }}</p>
+            {% if portfolio.is_image %}
+              <img src="{{ portfolio.media.url }}" alt="{{ portfolio.title }}" width="320">
+            {% elif portfolio.is_video %}
+              <video width="320" height="240" controls>
+                <source src="{{ portfolio.media.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            {% else %}
+              <a href="{{ portfolio.media.url }}">{{ media.media.name }}</a>
+            {% endif %}
+            <a class="btn btn-danger" href={% url "portfolio_like" portfolio_id=portfolio.id %}>Лайк</a>
+            <a class="btn btn-danger" href={% url "portfolio_dislike" portfolio_id=portfolio.id %}>Дизлайк</a>
+          </div>
         </div>
       </div>
     </div>
