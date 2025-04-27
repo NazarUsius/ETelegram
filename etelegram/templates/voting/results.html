@@ -1,0 +1,9 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>Результаты голосования</h2>
+    {% for user_answer in user_answers %}
+        <p>Ответ: {{ user_answer.answer.title }}</p>
+    {% endfor %}
+{% endblock %}

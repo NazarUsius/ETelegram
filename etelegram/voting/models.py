@@ -11,14 +11,23 @@ class Voting(models.Model):
         return f"Voting: {self.title}"
 
 class Answer(models.Model):
+    voting = models.ForeignKey(Voting, on_delete=models.CASCADE, related_name="answers", null = True)
     title = models.CharField(max_length=30)
-
-class UserAnswer(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
 
 class Session(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='voting_sessions')
     voting = models.ForeignKey(Voting, on_delete=models.CASCADE)
+
+class UserAnswer(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, null = True)
+
+
+
+class Session(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='voting_sessions')
+    voting = models.ForeignKey(Voting, on_delete=models.CASCADE)
+
 
 

@@ -1,3 +1,6 @@
 from django.contrib import admin
-
-# Register your models here.
+from .models import *
+admin.site.register(Voting)
+admin.site.register(Session)
+admin.site.register(UserAnswer)
+admin.site.register(Answer)
