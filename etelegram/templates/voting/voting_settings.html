@@ -1,0 +1,24 @@
+{% extends 'base/_base.html' %}
+
+{% block content %}
+<br>
+<h2>Налаштування опитування: {{ voting.title }}</h2>
+<hr>
+
+<!-- Кнопка додавання відповіді до опитування -->
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'answer_create' voting_pk=voting.pk %}">
+        <button type="button">➕ Додати відповідь</button>
+    </a>
+</div>
+
+<!-- Виведення всіх варіантів відповідей для цього голосування -->
+{% for answer in voting.answers.all %}
+    <div style="margin-left: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 10px; margin-bottom: 20px;">
+        <h4>Відповідь: {{ answer.title }}</h4>
+    </div>
+{% empty %}
+    <p><em>Відповідей ще немає</em></p>
+{% endfor %}
+
+{% endblock %}
