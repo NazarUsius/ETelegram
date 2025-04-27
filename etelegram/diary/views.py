@@ -7,8 +7,13 @@ from .models import Grade
 
 def grades_list(request):
     grades = Grade.objects.select_related('user', 'subject').order_by( 'subject__name', 'date')
-    return render(request, 'diary/grades_list.html', {'grades': grades})
-
+    average = "Can not count"
+    if len(grades) != 0:
+        sum = 0
+        for i in grades:
+            sum += i.grade
+        average = sum/len(grades)
+    return render(request, 'diary/grades_list.html', {'grades': grades, 'average': average})
 def grade_create(request):
     if request.method == 'POST':
         form = GradeForm(request.POST)

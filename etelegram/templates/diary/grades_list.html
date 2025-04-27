@@ -25,6 +25,7 @@
         <td>{{ grade.grade }}</td>
         <td>{{ grade.date }}</td>
       </tr>
+
       {% empty %}
       <tr>
         <td colspan="6" class="text-center">Оцінок ще немає.</td>
@@ -32,6 +33,7 @@
       {% endfor %}
     </tbody>
   </table>
+{{ average }}
 </div>
 
 {% endblock %}
