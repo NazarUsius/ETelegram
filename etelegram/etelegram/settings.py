@@ -48,6 +48,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+#TAILWIND_APP_NAME = 'theme'
 
 # Application definition
 
@@ -70,6 +71,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'galary',
     'voting',
+    'tailwind',
+    'theme',
 
 ]
 LOGIN_REDIRECT_URL = '/main/'
@@ -91,7 +94,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates',  # Глобальная папка для шаблонов (если есть)
+            BASE_DIR / 'theme/templates',  # Глобальная папка для шаблонов (если есть)
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -153,6 +156,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR, "theme"
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
