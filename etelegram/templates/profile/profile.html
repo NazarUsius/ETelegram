@@ -54,6 +54,8 @@
             {% else %}
               <a href="{{ portfolio.media.url }}">{{ media.media.name }}</a>
             {% endif %}
+            <a class="btn btn-danger" href={% url "portfolio_like" portfolio_id=portfolio.id %}>Лайк</a>
+            <a class="btn btn-danger" href={% url "portfolio_dislike" portfolio_id=portfolio.id %}>Дизлайк</a>
           </div>
         </div>
       </div>

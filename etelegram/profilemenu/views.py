@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import UserProfileForm, PortfolioCreateForm
-from .models import Portfolio
+from .models import Portfolio, Portfolio_dislike, Portfolio_like
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 
@@ -80,5 +80,40 @@ def portfolio_edit_view(request):
     else:
         form = PortfolioCreateForm(instance=portfolio)
     return render(request, 'profile/portfolio_edit.html', {'form': form})
+
+
+@login_required
+def portfolio_like_view(request, portfolio_id):
+        portfolio = get_object_or_404(Portfolio, pk=portfolio_id)
+        like, created = Portfolio_like.objects.get_or_create(
+            author=request.user, portfolio=portfolio
+        )   
+
+        if not created: 
+            like.delete()
+        else:  
+            Portfolio_dislike.objects.filter(
+                author=request.user, portfolio=portfolio
+            ).delete()
+
+        return redirect("profile", id=request.user.id)
+
+
+@login_required
+def portfolio_dislike_view(request, portfolio_id):
+        portfolio = get_object_or_404(Portfolio, pk=portfolio_id)
+        like, created = Portfolio_dislike.objects.get_or_create(
+            author=request.user, portfolio=portfolio
+        )   
+
+        if not created:
+            like.delete()
+        else:  
+            Portfolio_like.objects.filter(
+                author=request.user, portfolio=portfolio
+            ).delete()
+
+        return redirect("profile", id=request.user.id)
+
     
     

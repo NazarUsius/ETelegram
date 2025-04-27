@@ -41,4 +41,28 @@ class Portfolio(models.Model):
     
     def __str__(self):
         return f"Portfolio: {self.title or self.media.name} by {self.user.username}"
+    
+
+class Portfolio_like(models.Model):
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('portfolio', 'author')
+
+    def __str__(self):
+        return f"Like by {self.author.username} on {self.portfolio.title}"
+    
+
+class Portfolio_dislike(models.Model):
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('portfolio', 'author')
+
+    def __str__(self):
+        return f"Dislike by {self.author.username} on {self.portfolio.title}"
 
