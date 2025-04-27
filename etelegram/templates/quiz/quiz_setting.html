@@ -1,0 +1,51 @@
+{% extends 'base/_base.html' %}
+
+{% block content %}
+<br>
+<h2>Налаштування тесту: {{ quiz.title }}</h2>
+<hr>
+
+<!-- Кнопка додавання секції -->
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'section_create' quiz_pk=quiz.pk %}">
+        <button type="button">➕ Додати секцію</button>
+    </a>
+</div>
+
+<!-- Вивід секцій, питань та відповідей -->
+{% for section in quiz.section_set.all %}
+    <div style="margin-left: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 10px; margin-bottom: 20px;">
+        <h3>Секція: {{ section.title }}</h3>
+
+        <!-- Кнопка додавання питання до секції -->
+        <a href="{% url 'question_create' quiz_pk=quiz.pk section_pk=section.pk %}">
+            <button type="button">➕ Додати питання</button>
+        </a>
+
+        {% for question in section.question_set.all %}
+            <div style="margin-left: 20px; margin-top: 10px;">
+                <h4>Питання: {{ question.title }}</h4>
+
+                <!-- Кнопка додавання відповіді до питання -->
+                <a href="{% url 'answer_create' quiz_pk=quiz.pk section_pk=section.pk question_pk=question.pk %}">
+                    <button type="button">➕ Додати відповідь</button>
+                </a>
+
+                <!-- Відповіді -->
+                <ul style="margin-left: 20px; list-style-type: disc;">
+                    {% for answer in question.answer_set.all %}
+                        <li>{{ answer.title }}</li>
+                    {% empty %}
+                        <li><em>Відповіді ще не додано</em></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% empty %}
+            <p style="margin-left: 20px;"><em>Питань ще немає</em></p>
+        {% endfor %}
+    </div>
+{% empty %}
+    <p><em>Секцій ще немає</em></p>
+{% endfor %}
+
+{% endblock %}

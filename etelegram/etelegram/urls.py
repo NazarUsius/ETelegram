@@ -27,4 +27,8 @@ urlpatterns = [
     path('forum/', include('forum.urls')),
     path('calendar/', include('event_calendar.urls')),
     path('profile/', include('profilemenu.urls')),
+    path('diary/', include('diary.urls')),
+    path('quiz/', include("quiz.urls")),
+    path('galary/', include("galary.urls")),
+    path('voting/', include("voting.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,16 +1,26 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model, login
 from .forms import CustomUserCreationForm
-from profilemenu.models import UserProfile
+from django.contrib import messages
+
+User = get_user_model()
+
 def register_view(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            group = form.cleaned_data['group']
-            group.user_set.add(user)
-            UserProfile.objects.create(user=user, group=group)
-            return redirect('login')
+            login(request, user)
+            if request.user.is_authenticated:
+                messages.success(request, 'Вы успешно зарегистрировались!')
+                return redirect('index')
+            else:
+                messages.error(request, 'Ошибка при авторизации!')
+                return redirect('login')
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
     else:
         form = CustomUserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
+
+

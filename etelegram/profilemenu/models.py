@@ -1,19 +1,68 @@
+import os
 from django.db import models
-from django.contrib.auth.models import User, Group
+from django.conf import settings
+from django.core.exceptions import ValidationError
 
-class UserProfile(models.Model):
-    GENDER_CHOICES = [
-        ('male', 'Чоловік'),
-        ('female', 'Жінка'),
-        ('other', 'Інше'),
-    ]
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    avatar = models.ImageField(upload_to='avatars/', default='avatars/default.png')
-    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
+def validate_file_extension(value):
+    """Validates that the uploaded file has an allowed extension."""
+    ext = os.path.splitext(value.name)[1].lower()
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.avi', '.mov']
+    if ext not in valid_extensions:
+        raise ValidationError(f"Unsupported file extension: {ext}. Allowed extensions are: {', '.join(valid_extensions)}")
+
+
+
+class Portfolio(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    media = models.FileField(upload_to='portfolio/', validators=[validate_file_extension])
+    hided = models.BooleanField(default=False)
+    title = models.CharField(max_length=255, blank=True)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    
+
+    @property
+    def is_image(self):
+        image_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+        ext = os.path.splitext(self.media.name)[1].lower()
+        return ext in image_extensions
+
+    @property
+    def is_video(self):
+        video_extensions = ['.mp4', '.avi', '.mov']
+        ext = os.path.splitext(self.media.name)[1].lower()
+        return ext in video_extensions
+    
+    class Meta:
+        unique_together = ('user', 'title')
+    
+    def __str__(self):
+        return f"Portfolio: {self.title or self.media.name} by {self.user.username}"
+    
+
+class Portfolio_like(models.Model):
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('portfolio', 'author')
 
     def __str__(self):
-        return f"Профіль: {self.user.username}"
+        return f"Like by {self.author.username} on {self.portfolio.title}"
+    
+
+class Portfolio_dislike(models.Model):
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('portfolio', 'author')
+
+    def __str__(self):
+        return f"Dislike by {self.author.username} on {self.portfolio.title}"
+

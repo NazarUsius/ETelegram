@@ -8,8 +8,6 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-def landing_page(request):
-    return render(request, 'landing.html')
 
 def get_post_data(branch):
     branch_likes = LikeBranch.objects.filter(branch=branch)
@@ -39,7 +37,7 @@ def get_post_data(branch):
 
 class BranchListView(ListView):
     model = Branch
-    template_name = "forum.html"
+    template_name = "forum/forum.html"
     context_object_name = "posts_data"
 
     def get_context_data(self, **kwargs):
@@ -50,7 +48,7 @@ class BranchListView(ListView):
 
 class BranchDetailView(LoginRequiredMixin, DetailView):
     model = Branch
-    template_name = "branch_detail.html"
+    template_name = "forum/branch_detail.html"
     context_object_name = "data"
     login_url = "/accounts/login/"
 
@@ -60,11 +58,12 @@ class BranchDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['data'] = data
         context['form'] = CommentForm()
+        context['user'] = self.request.user
         return context
 
 class BranchCreateView(UserPassesTestMixin, CreateView):
     model = Branch
-    template_name = "branch_create.html"
+    template_name = "forum/branch_create.html"
     form_class = BranchForm
     login_url = "/accounts/login/"
 
@@ -76,7 +75,7 @@ class BranchCreateView(UserPassesTestMixin, CreateView):
 
 class BranchUpdateView(UserPassesTestMixin, UpdateView):
     model = Branch
-    template_name = "branch_update.html"
+    template_name = "forum/branch_update.html"
     fields = ["title", "description"]
     login_url = "/accounts/login/"
 
@@ -88,7 +87,7 @@ class BranchUpdateView(UserPassesTestMixin, UpdateView):
 
 class BranchDeleteView(UserPassesTestMixin, DeleteView):
     model = Branch
-    template_name = "branch_detail.html"
+    template_name = "forum/branch_detail.html"
     context_object_name = 'data'
     login_url = "/accounts/login/"
 
@@ -108,7 +107,7 @@ class BranchDeleteView(UserPassesTestMixin, DeleteView):
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
-    template_name = "branch_detail"
+    template_name = "forum/branch_detail"
     form_class = CommentForm
     login_url = "/accounts/login/"
 
@@ -129,21 +128,15 @@ class LikeBranchCreateView(LoginRequiredMixin, CreateView):
     login_url = "/accounts/login/"
 
     def form_valid(self, form):
-        # Получаем объект ветки
         branch = get_object_or_404(Branch, pk=self.kwargs['pk'])
 
-        # Проверка, чтобы пользователь не лайкал дважды
         if LikeBranch.objects.filter(user=self.request.user, branch=branch).exists():
             return HttpResponseForbidden("You have already liked this branch.")
-
-        # Присваиваем пользователя и ветку
         form.instance.user = self.request.user
         form.instance.branch = branch
 
-        # Сохраняем форму
         response = super().form_valid(form)
         return response
 
     def get_success_url(self):
-        # После успешного лайка перенаправляем на детальную страницу ветки
         return reverse('branch_detail', kwargs={'pk': self.kwargs['pk']})

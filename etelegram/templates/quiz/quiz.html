@@ -1,0 +1,9 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block content %}
+<br><br>
+{% for data in quiz_data %}
+<h1> {{ data.quiz.title }} </h1>
+{% endfor %}
+{% endblock %}

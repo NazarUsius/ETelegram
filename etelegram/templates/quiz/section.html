@@ -1,0 +1,22 @@
+<form method="post">
+    {% csrf_token %}
+    {% for question in questions %}
+        <div>
+            <h4>{{ question.title }}</h4>
+
+            {% if question.kind == "c" %}
+                {% for answer in question.answer_set.all %}
+                    <label>
+                        <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
+                        {{ answer.title }}
+                    </label><br>
+                {% endfor %}
+            {% elif question.kind == "tf" %}
+                <input type="text" name="question_{{ question.id }}_text">
+            {% endif %}
+        </div>
+        <hr>
+    {% endfor %}
+
+    <button type="submit">Submit</button>
+</form>

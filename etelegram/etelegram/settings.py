@@ -43,6 +43,11 @@ GOOGLE_CREDENTIALS = json.loads(GOOGLE_CREDENTIALS_JSON)
 
 GOOGLE_CALENDAR_ID = os.getenv("GOOGLE_CALENDAR_ID")
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
 
 # Application definition
 
@@ -58,7 +63,13 @@ INSTALLED_APPS = [
     'forum',
     'main',
     'event_calendar',
+    'quiz',
     'profilemenu',
+    'crispy_forms',
+    'diary',
+    'crispy_bootstrap5',
+    'galary',
+    'voting',
 
 ]
 LOGIN_REDIRECT_URL = '/main/'
@@ -149,3 +160,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
