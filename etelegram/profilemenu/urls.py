@@ -6,4 +6,5 @@ urlpatterns = [
     path('edit/', views.edit_profile_view, name='edit_profile'),
     path('portfolio/create', views.portfolio_create_view, name='portfolio_create'),
     path('portfolio/hide', views.portfolio_hide_view, name='portfolio_hide'),
+    path('portfolio/edit', views.portfolio_edit_view, name='portfolio_edit'),
 ]

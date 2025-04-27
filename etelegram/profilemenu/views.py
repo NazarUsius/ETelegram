@@ -57,10 +57,28 @@ def portfolio_create_view(request):
         form = PortfolioCreateForm()
     return render(request, 'profile/portfolio_create.html', {'form': form})
 
+
 @login_required
 def portfolio_hide_view(request):
         portfolio = get_object_or_404(Portfolio, user=request.user)
         portfolio.hided = True
         portfolio.save()
         return redirect('profile', id=request.user.id)  
+
+
+
+@login_required
+def portfolio_edit_view(request):
+    portfolio = get_object_or_404(Portfolio, user=request.user)
+    if request.method == 'POST':
+        form = PortfolioCreateForm(request.POST, request.FILES, instance=portfolio)
+        if form.is_valid():
+            portfolio = form.save(commit=False)
+            portfolio.save()
+            return redirect('profile', id=request.user.id)  
+
+    else:
+        form = PortfolioCreateForm(instance=portfolio)
+    return render(request, 'profile/portfolio_edit.html', {'form': form})
+    
     
