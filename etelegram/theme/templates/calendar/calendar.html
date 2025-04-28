@@ -1,0 +1,48 @@
+{% extends 'base/_base.html' %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Події Google Calendar</title>
+  <link href="./dist/styles.css" rel="stylesheet">
+
+
+</head>
+{% block content %}
+  <div class="bg-gray-100 text-pink-800">
+    <h1>Події в Google Calendar</h1>
+
+    <!-- Безпечне вставлення JSON даних -->
+    {{ json_data|json_script:"events-data" }}
+
+    <ul id="event-list"></ul>
+  </div>
+
+  <script>
+    // Отримуємо передані дані з JSON
+    const events = JSON.parse(document.getElementById("events-data").textContent);
+
+    // Перевірка, чи є events масивом
+    if (Array.isArray(events)) {
+      const eventList = document.getElementById("event-list");
+
+      // Ітерація по кожній події
+      events.forEach(event => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>${event.summary || 'Без назви'}</strong><br>
+          <span class="event-time">${new Date(event.start).toLocaleString()} - ${new Date(event.end).toLocaleString()}</span><br>
+          <p class="event-description">${event.description || 'Без опису'}</p>
+          <p class="event_id">id - ${event.id}</p>
+          <a href="${event.link}" target="_blank">Відкрити в Google Calendar</a>
+        `;
+        eventList.appendChild(li);
+      });
+    } else {
+      const eventList = document.getElementById("event-list");
+      eventList.innerHTML = "<li>Немає подій для відображення.</li>";
+    }
+  </script>
+{% endblock %}
+</html>

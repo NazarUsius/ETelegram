@@ -1,0 +1,8 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block content %}
+{% for data in voting_data %}
+<li>{{ data.title }}</li>
+{% endfor %}
+{% endblock %}

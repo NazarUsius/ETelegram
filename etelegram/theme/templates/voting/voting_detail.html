@@ -1,0 +1,25 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>{{ data.title }}</h1>
+
+<p>{{ data.description }}</p>
+
+<p><strong>Rating:</strong> {{ data.rating }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {% for answer in data.answer_set.all %}
+        <label>
+            <input type="radio" name="answer" value="{{ answer.id }}">
+            {{ answer.title }}
+        </label>
+        <br>
+    {% empty %}
+        <p>No answers available</p>
+    {% endfor %}
+
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
