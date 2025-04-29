@@ -1,3 +1,84 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+@keyframes fade-in {
+from {
+    opacity: 0;
+    transform: translateY(10px);
+}
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
+}
+.animate-fade-in {
+    animation: fade-in 0.4s forwards;
+}
+
+#background {
+    transition: background-color 1s ease-in-out;
+}
+
+.backgro {
+    width: max-content;
+    padding: 1rem;
+}
+
+input {
+    background-color: #201c1c;
+    color: #cdd6f4;
+    border: 1px solid #5eead4;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: 100%;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #5eead4;
+    outline: none;
+}
+
+textarea {
+    background-color: #474947;
+    color: #cdd6f4;
+    border: 1px solid #5eead4;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: 100%;
+    transition: border-color 0.2s;
+}
+
+textarea:focus {
+    border-color: #5eead4;
+    outline: none;
+}
+
+input[type="file"] {
+    display: block;
+    width: 100%;
+    font-size: 0.875rem; /* text-sm */
+    color: #d1d5db; /* text-gray-300 */
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 1rem; /* mr-4 */
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border-radius: 9999px; /* rounded-full */
+    border: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background-color: #2dd4bf; /* bg-teal-400 */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #14b8a6; /* hover:bg-teal-500 */
+}
+
+

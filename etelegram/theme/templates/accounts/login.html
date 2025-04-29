@@ -4,29 +4,26 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <!-- Центрируем форму -->
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-lg p-5" style="width: 500px; border-radius: 20px;">
-            <h3 class="text-center mb-4 text-success" style="font-size: 2rem;">Вхід</h3>
-            <form method="post">
-                {% csrf_token %}
-
-                <div class="mb-4">
-                    <label for="username" class="form-label" style="font-size: 1.2rem;">Ім'я користувача</label>
-                    <input type="text" name="username" id="username" class="form-control form-control-lg" placeholder="Ім'я користувача" required>
+<div class="flex justify-center items-center h-full py-28">
+    <div class="bg-[#3b3d3b] p-8 rounded-lg shadow-md w-96">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="space-y-4">
+                {% for field in form %}
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-white" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
                 </div>
-
-                <div class="mb-4">
-                    <label for="password" class="form-label" style="font-size: 1.2rem;">Пароль</label>
-                    <input type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Пароль" required>
-                </div>
-
-                <button type="submit" class="btn btn-outline-success w-100 btn-lg" style="font-size: 1.2rem;">Увійти</button>
-            </form>
-
-            <div class="text-center mt-4">
-                <a href="{% url 'register' %}" class="text-success" style="font-size: 1.1rem;">Ще не маєте акаунта? Зареєструйтесь</a>
+                {% endfor %}
             </div>
-        </div>
+            <button class="bg-teal-400 w-full py-2 mt-6 rounded-md" type="submit">Увійти</button>
+            <p class="mt-4 text-sm text-[#cdd6f4] text-center">
+                Немає облікового запису?
+                <a class="underline hover:text-teal-400" href="{% url 'register' %}">Зареєструватися</a>
+            </p>
+        </form>
     </div>
+</div>
 {% endblock %}

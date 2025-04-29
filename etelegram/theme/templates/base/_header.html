@@ -1,59 +1,47 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container">
-    <a class="navbar-brand" href={% url 'index' %}>Є-Телеграм</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'branch_list' %}">Форум</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href={% url 'list_events' %}>Події</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Оголошення</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href={% url 'quiz_list' %}>Опитування</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href={% url 'voting_list' %}>Голосування</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href={% url 'media_list' %}>Галерея</a>
-        </li>
-          {% if request.user.is_authenticated %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ request.user.username  }}
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href={% url 'profile' id=request.user.id %}>Профіль</a></li>
-            <li>
-                <form method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="dropdown-item">Вихід</button>
-                </form>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href={% url 'grades_list' %}>Оцінки</a></li>
-          </ul>
-        </li>
-        {% else %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Аккаунти
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href={% url 'login' %}>Логін</a></li>
-            <li><a class="dropdown-item" href={% url 'register' %}>Реєстрація</a></li>
-          </ul>
-        </li>
-        {% endif %}
-      </ul>
-
+<nav class="fixed bg-[#2e3133] flex flex-row items-center px-4 space-x-5 w-screen h-16 text-white ">
+  <a href="{% url 'index' %}" class="group cursor-pointer">
+    <div class="max-w-max h-10">
+      <h5 class="text-2xl font-bold">ETelegram</h5>
     </div>
-  </div>
+  </a>
+  <a href="{% url 'branch_list' %}" class="group cursor-pointer">
+    <div class="max-w-max h-7 hover:text-teal-400 transform hover:scale-105 transition duration-300">
+      <h5 class="text-base font-extrabold">Форум</h5>
+    </div>
+  </a>
+  <a href="{% url 'media_list' %}" class="group cursor-pointer">
+    <div class="max-w-max h-7 hover:text-teal-400 transform hover:scale-105 transition duration-300">
+      <h5 class="text-base font-extrabold">Галерея</h5>
+    </div>
+  </a>
+  <a href="{% url 'list_events' %}" class="group cursor-pointer">
+    <div class="max-w-max h-7 hover:text-teal-400 transform hover:scale-105 transition duration-300">
+      <h5 class="text-base font-extrabold">Події</h5>
+    </div>
+  </a>
+  <a href="#" class="group cursor-pointer">
+    <div class="max-w-max h-7 hover:text-teal-400 transform hover:scale-105 transition duration-300">
+      <h5 class="text-base font-extrabold">Оголошення</h5>
+    </div>
+  </a>
+  <a href="{% url 'voting_list' %}" class="group cursor-pointer">
+    <div class="max-w-max h-7 hover:text-teal-400 transform hover:scale-105 transition duration-300">
+      <h5 class="text-base font-extrabold">Голосування</h5>
+    </div>
+  </a>
+  <a href="{% url 'quiz_list' %}" class="group cursor-pointer">
+    <div class="max-w-max h-7 hover:text-teal-400 transform hover:scale-105 transition duration-300">
+      <h5 class="text-base font-extrabold">Опитування</h5>
+    </div>
+  <a href="{% url 'grades_list' %}" class="group cursor-pointer">
+    <div class="max-w-max h-7 hover:text-teal-400 transform hover:scale-105 transition duration-300">
+      <h5 class="text-base font-extrabold">Оцінки</h5>
+    </div>
+  </a>
+  <a href="#" class="group cursor-pointer">
+    <div class="max-w-max h-7 hover:text-teal-400 transform hover:scale-105 transition duration-300">
+      <h5 class="text-base font-extrabold">Матеріали</h5>
+    </div>
+  </a>
 </nav>
+
