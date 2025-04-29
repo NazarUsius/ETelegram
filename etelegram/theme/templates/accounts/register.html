@@ -1,34 +1,30 @@
 {% extends 'base/_base.html' %}
 {% load widget_tweaks %}
 
+
+{% load crispy_forms_tags %}
+
 {% block content %}
-<div class="d-flex justify-content-center align-items-center vh-100" style="background-color: transparent;">
-    <div class="card shadow-lg p-5" style="width: 400px; border-radius: 20px; background-color: white;">
-        <h3 class="text-center mb-4 text-success" style="font-size: 2rem;">Реєстрація</h3>
-        <form method="post">
+<div class="flex justify-center items-center h-full py-28">
+    <div class="bg-[#2e3133] p-8 rounded-lg shadow-md w-[650px]">
+        <form method="POST">
             {% csrf_token %}
-
-            <div class="mb-4">
-                <label for="username" class="form-label" style="font-size: 1.2rem;">Ім'я користувача</label>
-                {{ form.username|add_class:"form-control form-control-lg" }}
+            <div class="space-y-4">
+                {% for field in form %}
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-white" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field|add_class:"bg-[#2e3133] text-white border border-gray-600 rounded-md p-2 w-full" }}
+                </div>
+                {% endfor %}
             </div>
-
-            <div class="mb-4">
-                <label for="password1" class="form-label" style="font-size: 1.2rem;">Пароль</label>
-                {{ form.password1|add_class:"form-control form-control-lg" }}
-            </div>
-
-            <div class="mb-4">
-                <label for="password2" class="form-label" style="font-size: 1.2rem;">Підтвердження паролю</label>
-                {{ form.password2|add_class:"form-control form-control-lg" }}
-            </div>
-
-            <button type="submit" class="btn btn-outline-success w-100 btn-lg" style="font-size: 1.2rem;">Зареєструватися</button>
+            <button class="bg-teal-400 w-full py-2 mt-6 rounded-md" type="submit">Зареєструватися</button>
+            <p class="mt-4 text-sm text-[#cdd6f4] text-center">
+                Вже є аккаунт?
+                <a class="underline hover:text-teal-400" href="{% url 'login' %}">Увійти</a>
+            </p>
         </form>
-
-        <div class="text-center mt-4">
-            <a href="{% url 'login' %}" class="text-success" style="font-size: 1.1rem;">Вже маєте акаунт? Увійти</a>
-        </div>
     </div>
 </div>
 {% endblock %}
