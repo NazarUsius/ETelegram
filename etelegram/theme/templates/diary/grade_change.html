@@ -1,14 +1,28 @@
 {% extends 'base/_base.html' %}
-{% load crispy_forms_filters %}
+{% load widget_tweaks %}
 
 {% block content %}
-<form method="POST">
+<div class="max-w-2xl mx-auto mt-24 p-8 bg-white dark:bg-[#2b2c2b] rounded-xl shadow-md">
+  <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6 text-center">Змінити оцінку</h2>
+
+  <form method="POST" class="space-y-6">
     {% csrf_token %}
-    {{ form|crispy }}
+    
+    {% for field in form %}
+      <div>
+        <label class="block mb-1 text-gray-700 dark:text-gray-300 font-medium" for="{{ field.id_for_label }}">
+          {{ field.label }}
+        </label>
+        {% render_field field class="bg-[#2e3133] text-white border border-gray-600 rounded-md p-2 w-full" %}
+        {% if field.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ field.errors.0 }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
 
-    <button class='btn btn-success' type="submit">Edit</button>
+    <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg transition">
+      Зберегти оцінку
+    </button>
   </form>
-  <a href='{% url 'grade_delete' id=grade.id %}' class='btn btn-danger'>Delete</a>
-
-
+</div>
 {% endblock %}
