@@ -2,8 +2,19 @@
 {% load static %}
 
 {% block content %}
-    <h2>Результаты голосования</h2>
-    {% for user_answer in user_answers %}
-        <p>Ответ: {{ user_answer.answer.title }}</p>
-    {% endfor %}
+<div class="max-w-3xl mx-auto mt-28 p-8 bg-white dark:bg-gray-800 shadow-md rounded-2xl">
+  <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">📊 Результати голосування</h2>
+
+  {% if user_answers %}
+    <ul class="space-y-4 text-lg text-gray-800 dark:text-gray-200">
+      {% for user_answer in user_answers %}
+        <li class="border-b border-gray-200 dark:border-gray-600 pb-2">
+          ✅ Відповідь: <span class="font-medium">{{ user_answer.answer.title }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-gray-600 dark:text-gray-400 text-center">Результатів поки що немає.</p>
+  {% endif %}
+</div>
 {% endblock %}
