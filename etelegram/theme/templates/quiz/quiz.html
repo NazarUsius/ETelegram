@@ -2,8 +2,21 @@
 {% load static %}
 
 {% block content %}
-<br><br>
-{% for data in quiz_data %}
-<h1> {{ data.quiz.title }} </h1>
-{% endfor %}
+<div class="max-w-4xl mx-auto mt-28 p-6 bg-white dark:bg-[#2b2c2b] shadow-md rounded-2xl">
+  <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Список тестів</h2>
+
+  {% if quiz_data %}
+    <ul class="space-y-4">
+      {% for data in quiz_data %}
+      <a href="{% url 'quiz_detail' pk=data.quiz.id %}">
+        <li class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ data.quiz.title }}</h3>
+        </li>
+      </a>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-gray-500 dark:text-gray-400">Тести не знайдено.</p>
+  {% endif %}
+</div>
 {% endblock %}

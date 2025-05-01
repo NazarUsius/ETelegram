@@ -2,63 +2,69 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-4 mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow rounded-4 border-0">
-        <div class="card-body px-5 py-5 text-start">
-          <h1 class="mb-4">Профіль користувача</h1>
+<div class="max-w-4xl mx-auto mt-28 mb-4 px-6 py-8 bg-white dark:bg-[#2b2c2b] rounded-2xl shadow-md">
+  <h1 class="text-3xl font-semibold mb-6 text-gray-800 dark:text-white">Профіль користувача</h1>
 
-          <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap">
-            <div class="flex-grow-1 me-4">
-              <p class="mb-2"><strong>Імʼя користувача:</strong> {{ user.username }}</p>
-              <p class="mb-2"><strong>Група:</strong>
-                {% if user.group %}
-                  {{ user.group.name }}
-                {% else %}
-                  Не вказано
-                {% endif %}
-              </p>
-              <p class="mb-2"><strong>Дата народження:</strong> {{ user.birth_date|default:"Не вказано" }}</p>
-              <p class="mb-2"><strong>Електронна пошта:</strong> {{ user.email|default:"Не вказано" }}</p>
-              <p class="mb-0"><strong>Стать:</strong>
-                {% if user.gender == 'male' %}Чоловік
-                {% elif user.gender == 'female' %}Жінка
-                {% elif user.gender == 'other' %}Інше
-                {% else %}Не вказано
-                {% endif %}
-              </p>
-            </div>
-            <div class="text-end">
-              {% if user.avatar %}
-                <img src="{{ user.avatar.url }}" alt="Фото профілю" class="rounded-circle shadow" style="width: 140px; height: 140px; object-fit: cover;">
-              {% else %}
-                <img src="{% static 'images/default-avatar.png' %}" alt="Фото профілю" class="rounded-circle shadow" style="width: 140px; height: 140px; object-fit: cover;">
-              {% endif %}
-            </div>
-          </div>
+  <div class="flex flex-wrap gap-6 justify-between items-start mb-6">
+    <div class="flex-grow min-w-[250px] text-gray-700 dark:text-gray-200 space-y-2">
+      <p><strong>Імʼя користувача:</strong> {{ user.username }}</p>
+      <p><strong>Група:</strong>
+        {% if user.group %}
+          {{ user.group.name }}
+        {% else %}
+          Не вказано
+        {% endif %}
+      </p>
+      <p><strong>Дата народження:</strong> {{ user.birth_date|default:"Не вказано" }}</p>
+      <p><strong>Електронна пошта:</strong> {{ user.email|default:"Не вказано" }}</p>
+      <p><strong>Стать:</strong>
+        {% if user.gender == 'male' %}Чоловік
+        {% elif user.gender == 'female' %}Жінка
+        {% elif user.gender == 'other' %}Інше
+        {% else %}Не вказано
+        {% endif %}
+      </p>
+    </div>
+    <div>
+      {% if user.avatar %}
+        <img src="{{ user.avatar.url }}" alt="Фото профілю"
+             class="w-36 h-36 rounded-full object-cover shadow-md border border-gray-300 dark:border-gray-600">
+      {% else %}
+        <img src="{% static 'images/default-avatar.png' %}" alt="Фото профілю"
+             class="w-36 h-36 rounded-full object-cover shadow-md border border-gray-300 dark:border-gray-600">
+      {% endif %}
+    </div>
+  </div>
 
-          <div class="mt-4">
-            <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary px-4">Редагувати профіль</a>
-          </div>
-          <div>
-            <p class="mb-2"><strong>Заголовок:</strong> {{ portfolio.title|default:"Не вказано" }}</p>
-            <p class="mb-2"><strong>Опис:</strong> {{ portfolio.description|default:"Не вказано" }}</p>
-            {% if portfolio.is_image %}
-              <img src="{{ portfolio.media.url }}" alt="{{ portfolio.title }}" width="320">
-            {% elif portfolio.is_video %}
-              <video width="320" height="240" controls>
-                <source src="{{ portfolio.media.url }}" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-            {% else %}
-              <a href="{{ portfolio.media.url }}">{{ media.media.name }}</a>
-            {% endif %}
-            <a class="btn btn-danger" href={% url "portfolio_like" portfolio_id=portfolio.id %}>Лайк</a>
-            <a class="btn btn-danger" href={% url "portfolio_dislike" portfolio_id=portfolio.id %}>Дизлайк</a>
-          </div>
-        </div>
-      </div>
+  <div class="mt-4">
+    <a href="{% url 'edit_profile' %}"
+       class="inline-block bg-transparent text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-black transition">
+      ✏️ Редагувати профіль
+    </a>
+  </div>
+
+  <hr class="my-8 border-gray-300 dark:border-gray-600">
+
+  <div class="text-gray-700 dark:text-gray-200 space-y-3">
+    <p><strong>Заголовок:</strong> {{ portfolio.title|default:"Не вказано" }}</p>
+    <p><strong>Опис:</strong> {{ portfolio.description|default:"Не вказано" }}</p>
+
+    {% if portfolio.is_image %}
+      <img src="{{ portfolio.media.url }}" alt="{{ portfolio.title }}" class="w-full max-w-md rounded-lg shadow-md">
+    {% elif portfolio.is_video %}
+      <video class="w-full max-w-md rounded-lg shadow-md" controls>
+        <source src="{{ portfolio.media.url }}" type="video/mp4">
+        Ваш браузер не підтримує відео.
+      </video>
+    {% else %}
+      <a href="{{ portfolio.media.url }}" class="text-blue-500 underline">{{ portfolio.media.name }}</a>
+    {% endif %}
+
+    <div class="flex gap-4 mt-4">
+      <a href="{% url 'portfolio_like' portfolio_id=portfolio.id %}"
+         class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition">👍 Лайк</a>
+      <a href="{% url 'portfolio_dislike' portfolio_id=portfolio.id %}"
+         class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">👎 Дизлайк</a>
     </div>
   </div>
 </div>

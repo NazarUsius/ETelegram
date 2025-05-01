@@ -1,9 +1,17 @@
 {% extends 'base/_base.html' %}
+{% load static %}
 
 {% block content %}
-  <h1>{{ quiz.title }}</h1>
-  <p>{{ quiz.description }}</p>
+<div class="max-w-3xl mx-auto mt-28 p-6 bg-white dark:bg-[#2b2c2b] shadow-md rounded-2xl">
+  <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">{{ quiz.title }}</h1>
+  <p class="text-gray-600 dark:text-gray-300 mb-6">{{ quiz.description }}</p>
 
-  <h3>Інформація:</h3>
-  {{ data }}
+
+
+  <div class="text-center mt-6">
+    <a href="{% url 'quiz_start' quiz_id=quiz.pk %}" class="inline-block px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-xl transition">
+      ▶️ Почати тест
+    </a>
+  </div>
+</div>
 {% endblock %}

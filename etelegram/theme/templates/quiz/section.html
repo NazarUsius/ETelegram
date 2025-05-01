@@ -1,22 +1,42 @@
-<form method="post">
-    {% csrf_token %}
-    {% for question in questions %}
-        <div>
-            <h4>{{ question.title }}</h4>
+{% extends 'base/_base.html' %}
+{% load static %}
 
-            {% if question.kind == "c" %}
-                {% for answer in question.answer_set.all %}
-                    <label>
-                        <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
-                        {{ answer.title }}
-                    </label><br>
-                {% endfor %}
-            {% elif question.kind == "tf" %}
-                <input type="text" name="question_{{ question.id }}_text">
-            {% endif %}
-        </div>
-        <hr>
+{% block content %}
+<div class="max-w-4xl mx-auto mt-28 p-8 bg-white dark:bg-gray-800 shadow-md rounded-2xl">
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">📝 Пройди тест</h1>
+
+  <form method="post" class="space-y-10">
+    {% csrf_token %}
+
+    {% for question in questions %}
+      <div class="space-y-4">
+        <h4 class="text-xl font-semibold text-gray-800 dark:text-white">{{ question.title }}</h4>
+
+        {% if question.kind == "c" %}
+          <div class="space-y-2">
+            {% for answer in question.answer_set.all %}
+              <label class="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}"
+                       class="form-radio text-blue-600 focus:ring-blue-500">
+                <span>{{ answer.title }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        {% elif question.kind == "tf" %}
+          <input type="text" name="question_{{ question.id }}_text"
+                 placeholder="Ваша відповідь..."
+                 class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+        {% endif %}
+      </div>
+      <hr class="border-gray-300 dark:border-gray-600">
     {% endfor %}
 
-    <button type="submit">Submit</button>
-</form>
+    <div class="text-center">
+      <button type="submit"
+              class="px-8 py-3 bg-blue-600 text-white font-semibold text-lg rounded-xl shadow hover:bg-blue-700 transition duration-200">
+        ✅ Надіслати відповіді
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
