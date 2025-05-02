@@ -1,0 +1,71 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-28 mb-4 px-6 py-8 bg-white dark:bg-[#2b2c2b] rounded-2xl shadow-md">
+  <h1 class="text-3xl font-semibold mb-6 text-gray-800 dark:text-white">Профіль користувача</h1>
+
+  <div class="flex flex-wrap gap-6 justify-between items-start mb-6">
+    <div class="flex-grow min-w-[250px] text-gray-700 dark:text-gray-200 space-y-2">
+      <p><strong>Імʼя користувача:</strong> {{ user.username }}</p>
+      <p><strong>Група:</strong>
+        {% if user.group %}
+          {{ user.group.name }}
+        {% else %}
+          Не вказано
+        {% endif %}
+      </p>
+      <p><strong>Дата народження:</strong> {{ user.birth_date|default:"Не вказано" }}</p>
+      <p><strong>Електронна пошта:</strong> {{ user.email|default:"Не вказано" }}</p>
+      <p><strong>Стать:</strong>
+        {% if user.gender == 'male' %}Чоловік
+        {% elif user.gender == 'female' %}Жінка
+        {% elif user.gender == 'other' %}Інше
+        {% else %}Не вказано
+        {% endif %}
+      </p>
+    </div>
+    <div>
+      {% if user.avatar %}
+        <img src="{{ user.avatar.url }}" alt="Фото профілю"
+             class="w-36 h-36 rounded-full object-cover shadow-md border border-gray-300 dark:border-gray-600">
+      {% else %}
+        <img src="{% static 'images/default-avatar.png' %}" alt="Фото профілю"
+             class="w-36 h-36 rounded-full object-cover shadow-md border border-gray-300 dark:border-gray-600">
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <a href="{% url 'edit_profile' %}"
+       class="inline-block bg-transparent text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-black transition">
+      ✏️ Редагувати профіль
+    </a>
+  </div>
+
+  <hr class="my-8 border-gray-300 dark:border-gray-600">
+
+  <div class="text-gray-700 dark:text-gray-200 space-y-3">
+    <p><strong>Заголовок:</strong> {{ portfolio.title|default:"Не вказано" }}</p>
+    <p><strong>Опис:</strong> {{ portfolio.description|default:"Не вказано" }}</p>
+
+    {% if portfolio.is_image %}
+      <img src="{{ portfolio.media.url }}" alt="{{ portfolio.title }}" class="w-full max-w-md rounded-lg shadow-md">
+    {% elif portfolio.is_video %}
+      <video class="w-full max-w-md rounded-lg shadow-md" controls>
+        <source src="{{ portfolio.media.url }}" type="video/mp4">
+        Ваш браузер не підтримує відео.
+      </video>
+    {% else %}
+      <a href="{{ portfolio.media.url }}" class="text-blue-500 underline">{{ portfolio.media.name }}</a>
+    {% endif %}
+
+    <div class="flex gap-4 mt-4">
+      <a href="{% url 'portfolio_like' portfolio_id=portfolio.id %}"
+         class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition">👍 Лайк</a>
+      <a href="{% url 'portfolio_dislike' portfolio_id=portfolio.id %}"
+         class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">👎 Дизлайк</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

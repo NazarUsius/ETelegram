@@ -1,0 +1,48 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-20 px-4">
+  <div class="bg-white dark:bg-[#2b2c2b] shadow-xl rounded-3xl p-8">
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-8">✏️ Редагування профілю</h2>
+
+    <div class="flex flex-col md:flex-row justify-between gap-8">
+      
+      <!-- Форма редагування -->
+      <div class="flex-1">
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+          {% csrf_token %}
+          {% for field in form %}
+            <div>
+              <label for="{{ field.id_for_label }}" class="block text-gray-700 dark:text-gray-300 mb-1">
+                {{ field.label }}
+              </label>
+              {{ field|add_class:"w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-teal-500" }}
+              {% if field.help_text %}
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ field.help_text }}</p>
+              {% endif %}
+              {% for error in field.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endfor %}
+
+          <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg transition font-semibold">
+            💾 Зберегти зміни
+          </button>
+        </form>
+      </div>
+
+      <!-- Аватар -->
+      <div class="flex flex-col items-center">
+        {% if user.avatar %}
+          <img src="{{ user.avatar.url }}" alt="Фото профілю" class="rounded-full w-40 h-40 object-cover shadow-md">
+        {% else %}
+          <img src="{% static 'images/default-avatar.png' %}" alt="Фото профілю" class="rounded-full w-40 h-40 object-cover shadow-md">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

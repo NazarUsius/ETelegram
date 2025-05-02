@@ -62,18 +62,24 @@ def voting(request, session_id):
     answers = voting.answers.all()
 
     if request.method == "POST":
-        for answer in answers:
-            selected_answer = request.POST.get(f"answer_{answer.id}")
-            if selected_answer:
-                UserAnswer.objects.create(user = request.user, answer = answer)
+        selected_answer_id = request.POST.get("selected_answer")
+        if selected_answer_id:
+            try:
+                selected_answer = voting.answers.get(id=selected_answer_id)
+                UserAnswer.objects.create(user=request.user, answer=selected_answer)
+            except Answer.DoesNotExist:
+                # можно вывести ошибку или просто проигнорировать
+                print("Invalid answer selected")
 
-        return redirect("results", session_id = session.id)
+
+        return redirect("results", session_id=session.id)
 
     return render(request, 'voting/voting.html', {
         'session': session,
         'voting': voting,
         'answers': answers,
     })
+
 
 def results(request, session_id):
     session = get_object_or_404(Session, id=session_id, user=request.user)

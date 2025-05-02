@@ -1,0 +1,60 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-28 p-6 bg-white dark:bg-[#2b2c2b] shadow-md rounded-2xl">
+  <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">
+    Налаштування тесту: <span class="text-blue-600">{{ quiz.title }}</span>
+  </h2>
+  <hr class="mb-6 border-gray-300 dark:border-gray-700">
+
+  <!-- Кнопка додавання секції -->
+  <div class="mb-6">
+    <a href="{% url 'section_create' quiz_pk=quiz.pk %}" class="inline-block">
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        ➕ Додати секцію
+      </button>
+    </a>
+  </div>
+
+  <!-- Вивід секцій -->
+  {% for section in quiz.section_set.all %}
+    <div class="mb-6 p-5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
+      <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Секція: {{ section.title }}</h3>
+
+      <!-- Кнопка додавання питання -->
+      <a href="{% url 'question_create' quiz_pk=quiz.pk section_pk=section.pk %}" class="inline-block mb-4">
+        <button class="bg-green-600 text-white px-3 py-1.5 rounded hover:bg-green-700 transition">
+          ➕ Додати питання
+        </button>
+      </a>
+
+      {% for question in section.question_set.all %}
+        <div class="ml-4 mb-4">
+          <h4 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Питання: {{ question.title }}</h4>
+
+          <!-- Кнопка додавання відповіді -->
+          <a href="{% url 'answer_create' quiz_pk=quiz.pk section_pk=section.pk question_pk=question.pk %}" class="inline-block mb-2">
+            <button class="bg-yellow-500 text-white px-3 py-1.5 rounded hover:bg-yellow-600 transition">
+              ➕ Додати відповідь
+            </button>
+          </a>
+
+          <!-- Відповіді -->
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300">
+            {% for answer in question.answer_set.all %}
+              <li>{{ answer.title }}</li>
+            {% empty %}
+              <li><em class="text-gray-500">Відповіді ще не додано</em></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% empty %}
+        <p class="ml-4 text-sm text-gray-500"><em>Питань ще немає</em></p>
+      {% endfor %}
+    </div>
+  {% empty %}
+    <p class="text-gray-500"><em>Секцій ще немає</em></p>
+  {% endfor %}
+</div>
+{% endblock %}

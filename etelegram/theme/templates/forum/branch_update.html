@@ -1,0 +1,39 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="min-h-screen mt-16 dark:bg-[#1c1e1f] py-12 px-4">
+    <div class="max-w-md mx-auto">
+        <div class="bg-white dark:bg-[#2b2c2b] shadow-md rounded-3xl p-6">
+            <h3 class="text-center text-2xl font-semibold text-primary dark:text-white mb-6">
+                ✏️ Редагувати допис
+            </h3>
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-5">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div>
+                        <label for="{{ field.id_for_label }}" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ field.label }}
+                        </label>
+                        {{ field|add_class:"form-control bg-white dark:bg-slate-700 dark:text-white border-gray-300 dark:border-gray-600 rounded-md" }}
+                        {% if field.errors %}
+                            <p class="text-sm text-red-500 mt-1">{{ field.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="flex justify-between mt-6">
+                    <a href="{% url 'branch_list' %}" class="p-1 dark:bg-gray-600 rounded-md dark:hover:bg-gray-700 dark:text-white">
+                        Скасувати
+                    </a>
+                    <button type="submit" class="p-1 rounded-md dark:bg-teal-600 dark:hover:bg-teal-700 text-white">
+                        Зберегти
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
