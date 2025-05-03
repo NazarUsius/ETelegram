@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Advertisements In Queue</h2>
+<ul>
+    {% for ad in approved_advertisements %}
+        <li>
+            <strong>{{ ad.title }}</strong><br>
+            <img src="{{ ad.media.url }}" width="150"><br>
+            {{ ad.description }}<br>
+            Status: {{ ad.status }}
+        </li>
+    {% empty %}
+        <li>No advertisements in queue.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
