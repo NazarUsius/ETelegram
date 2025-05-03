@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base/_base.html' %}
 
 {% block content %}
 <h2>Advertisements In Queue</h2>
@@ -8,7 +8,8 @@
             <strong>{{ ad.title }}</strong><br>
             <img src="{{ ad.media.url }}" width="150"><br>
             {{ ad.description }}<br>
-            Status: {{ ad.status }}
+            Status: {{ ad.status }}<br>
+            <a href="{% url 'approve_update' ad.pk %}">Подтвердить</a>
         </li>
     {% empty %}
         <li>No advertisements in queue.</li>

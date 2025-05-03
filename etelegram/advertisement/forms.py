@@ -14,9 +14,4 @@ class AddCreate(forms.ModelForm):
 class ApproveAddCreate(forms.ModelForm):
     class Meta:
         model = Advertisement
-        fields = ['title', 'media', 'description']
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'media': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-        }
+        fields = []

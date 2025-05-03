@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 from .models import Advertisement
 from .forms import AddCreate, ApproveAddCreate
 from django.urls import reverse_lazy
@@ -34,12 +34,16 @@ class ApproveListView(ListView):
         context["approved_advertisements"] = Advertisement.objects.filter(status="In queue")
         return context
 
-class ApproveCreateView(CreateView):
+class ApproveUpdateView(UpdateView):
     model = Advertisement
     template_name = "advertisement/advertisement_create.html"
     form_class = ApproveAddCreate
     success_url = reverse_lazy('approve_list')
 
     def form_valid(self, form):
+        advertisement = Advertisement.objects.get(pk=self.kwargs['pk'])
+        form.instance.title = advertisement.title
+        form.instance.media = advertisement.media
+        form.instance.description = advertisement.description
         form.instance.status = "Approved"
         return super().form_valid(form)
