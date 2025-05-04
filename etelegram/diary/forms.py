@@ -38,6 +38,11 @@ class GradeForm(forms.ModelForm):
         if not 1 <= grade <= 12:
             raise ValidationError("Оценка должна быть от 1 до 12.")
         return grade
+    
+class GradeFilterForm(forms.Form):
+    subject = forms.ModelChoiceField(queryset=Subject.objects.all(), required=False, label='Предмет')
+    evaluation_type = forms.ChoiceField(choices=EvaluationType.choices, required=False, label='Тип роботи')
+    date_from = forms.DateField(required=False, label='Дата від', widget=forms.DateInput(attrs={'type': 'date'}))
 
 class GradeFilterForm(forms.Form):
     subject = forms.ModelChoiceField(queryset=Subject.objects.all(), required=False, label='Предмет')
