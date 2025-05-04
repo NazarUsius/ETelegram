@@ -32,4 +32,5 @@ urlpatterns = [
     path('galary/', include("galary.urls")),
     path('voting/', include("voting.urls")),
     path('materials/', include("materialsapp.urls")),
+    path('announcemets/', include("announcemets.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
