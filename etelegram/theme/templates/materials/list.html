@@ -1,0 +1,51 @@
+{% extends 'base/_base.html' %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto mt-24 mb-4 px-4">
+  <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-10">📁 Список медіа</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {% for media in media_list %}
+      <div class="bg-white dark:bg-[#2b2c2b] rounded-xl shadow-md overflow-hidden p-5 space-y-4">
+        
+        {% if media.is_image %}
+          <img src="{{ media.media.url }}" alt="{{ media.title }}" class="w-full h-64 object-cover rounded-lg shadow-sm">
+        {% elif media.is_video %}
+          <video class="w-full rounded-lg shadow-sm" controls>
+            <source src="{{ media.media.url }}" type="video/mp4">
+            Ваш браузер не підтримує відео.
+          </video>
+        {% else %}
+          <a href="{{ media.media.url }}" class="text-blue-500 underline break-all">{{ media.media.name }}</a>
+        {% endif %}
+
+        <div class="space-y-1">
+          {% if media.title %}
+            <p class="text-lg font-semibold text-gray-900 dark:text-white">📌 {{ media.title }}</p>
+          {% endif %}
+          {% if media.description %}
+            <p class="text-gray-700 dark:text-gray-300">{{ media.description }}</p>
+          {% endif %}
+          <p class="text-sm text-gray-600 dark:text-gray-400">👤 Тип: {{ media.material_type }}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">📅 Створено: {{ media.uploaded_at }}</p>
+        </div>
+
+        {% if request.user.is_staff %}
+        <div class="mt-4">
+            <a 
+            href="{% url 'material_delete' media.id %}"
+            class="inline-block bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition">
+                🗑️ Видалити
+            </a>
+
+          </div>
+        {% endif %}
+      </div>
+    {% empty %}
+      <div class="col-span-full text-center text-gray-500 dark:text-gray-400">
+        😔 Поки що немає медіа.
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
