@@ -21,9 +21,7 @@ class Session(models.Model):
 class UserAnswer(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    session = models.ForeignKey(Session, on_delete=models.CASCADE, null = True, related_name='voting_sessions') 
-
-
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, null = True)
 
 
 

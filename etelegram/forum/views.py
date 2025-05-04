@@ -108,7 +108,7 @@ class BranchDeleteView(UserPassesTestMixin, DeleteView):
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     template_name = "forum/branch_detail"
-    form_class = CommentForm
+    form_class = CommentForm    
     login_url = "/accounts/login/"
 
     def form_valid(self, form):

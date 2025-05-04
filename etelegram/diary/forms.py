@@ -44,3 +44,8 @@ class GradeFilterForm(forms.Form):
     evaluation_type = forms.ChoiceField(choices=EvaluationType.choices, required=False, label='Тип роботи')
     date_from = forms.DateField(required=False, label='Дата від', widget=forms.DateInput(attrs={'type': 'date'}))
 
+class GradeFilterForm(forms.Form):
+    subject = forms.ModelChoiceField(queryset=Subject.objects.all(), required=False, label='Предмет')
+    evaluation_type = forms.ChoiceField(choices=EvaluationType.choices, required=False, label='Тип роботи')
+    date_from = forms.DateField(required=False, label='Дата від', widget=forms.DateInput(attrs={'type': 'date'}))
+
