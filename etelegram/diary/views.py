@@ -2,12 +2,31 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from django.shortcuts import render
 
-from .forms import GradeForm
+from .forms import GradeForm, GradeFilterForm
 from .models import Grade
 
 def grades_list(request):
-    grades = Grade.objects.select_related('user', 'subject').order_by( 'subject__name', 'date')
-    return render(request, 'diary/grades_list.html', {'grades': grades})
+    form = GradeFilterForm(request.GET or None)
+    sort_by = request.GET.get('sort', 'date')
+    grades = Grade.objects.select_related('user', 'subject').only('user', 'subject', 'grade', 'date')
+    if form.is_valid():
+        subject = form.cleaned_data.get('subject')
+        evaluation_type = form.cleaned_data.get('evaluation_type')
+        date_from = form.cleaned_data.get('date_from')
+
+        if subject:
+            grades = grades.filter(subject=subject)
+        if evaluation_type:
+            grades = grades.filter(evaluation_type=evaluation_type)
+        if date_from:
+            grades = grades.filter(date__gte=date_from)
+    average = "Can not count"
+    if len(grades) != 0:
+        sum = 0
+        for i in grades:
+            sum += i.grade
+        average = sum/len(grades)
+    return render(request, 'diary/grades_list.html', {'grades': grades, 'average': average, "form": form})
 
 def grade_create(request):
     if request.method == 'POST':
