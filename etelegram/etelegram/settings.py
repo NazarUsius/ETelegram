@@ -67,12 +67,14 @@ INSTALLED_APPS = [
     'quiz',
     'profilemenu',
     'crispy_forms',
+    'materialsapp',
     'diary',
     'crispy_bootstrap5',
     'galary',
     'voting',
     'tailwind',
     'theme',
+    'announcemets',
 
 ]
 LOGIN_REDIRECT_URL = '/main/'
