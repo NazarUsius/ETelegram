@@ -2,13 +2,30 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from django.shortcuts import render
 
-from .forms import GradeForm, GradeFilterForm
+from .forms import GradeForm, GradeFilterForm, EvaluationType
 from .models import Grade
 
+from django import forms
+from django.shortcuts import render
+from .models import Grade, Subject
+
 def grades_list(request):
+    GradeFilterForm = forms.Form
+    GradeFilterForm.base_fields['subject'] = forms.ModelChoiceField(queryset=Subject.objects.all(), required=False)
+    GradeFilterForm.base_fields['evaluation_type'] = forms.ChoiceField(
+        choices=[('', 'Усі типи')] + list(EvaluationType.choices),
+        required=False
+    )
+    GradeFilterForm.base_fields['date_from'] = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
+
     form = GradeFilterForm(request.GET or None)
     sort_by = request.GET.get('sort', 'date')
+
     grades = Grade.objects.select_related('user', 'subject').only('user', 'subject', 'grade', 'date')
+
     if form.is_valid():
         subject = form.cleaned_data.get('subject')
         evaluation_type = form.cleaned_data.get('evaluation_type')
@@ -20,13 +37,18 @@ def grades_list(request):
             grades = grades.filter(evaluation_type=evaluation_type)
         if date_from:
             grades = grades.filter(date__gte=date_from)
+
     average = "Can not count"
-    if len(grades) != 0:
-        sum = 0
-        for i in grades:
-            sum += i.grade
-        average = sum/len(grades)
-    return render(request, 'diary/grades_list.html', {'grades': grades, 'average': average, "form": form})
+    if grades.exists():
+        total = sum(g.grade for g in grades)
+        average = total / grades.count()
+
+    return render(request, 'diary/grades_list.html', {
+        'grades': grades,
+        'average': average,
+        'form': form
+    })
+
 def grade_create(request):
     if request.method == 'POST':
         form = GradeForm(request.POST)
