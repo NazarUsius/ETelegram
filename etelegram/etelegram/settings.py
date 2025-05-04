@@ -73,7 +73,6 @@ INSTALLED_APPS = [
     'voting',
     'tailwind',
     'theme',
-    'advertisement',
 
 ]
 LOGIN_REDIRECT_URL = '/main/'
