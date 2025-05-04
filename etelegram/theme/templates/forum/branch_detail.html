@@ -1,0 +1,92 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="mt-24 max-w-6xl mx-auto py-10 px-4 bg-gray-100 dark:bg-[#2b2c2b] rounded-2xl">
+
+  <!-- Заголовок -->
+  <div class="text-center mb-10">
+    <div class="bg-green-600 text-white py-4 rounded-xl">
+      <h2 class="text-4xl font-bold">Інформація про гілку</h2>
+    </div>
+  </div>
+
+  <!-- Інфо про гілку -->
+  <div class="flex flex-col md:flex-row bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 gap-6 mb-8">
+    {% if data.branch.media %}
+    <img src="{{ data.branch.media.url }}" alt="Branch Media"
+        class="w-full md:w-[400px] h-auto rounded-lg shadow-md object-cover">
+    {% endif %}
+
+    <div class="flex-1 space-y-6">
+      <div class="bg-gray-100 dark:bg-slate-700 p-4 rounded-md">
+        <h3 class="text-lg font-semibold text-green-700 dark:text-green-400">Назва гілки</h3>
+        <p class="text-gray-800 dark:text-white">{{ data.branch.title }}</p>
+      </div>
+      <div class="bg-gray-100 dark:bg-slate-700 p-4 rounded-md">
+        <h3 class="text-lg font-semibold text-green-700 dark:text-green-400">Опис</h3>
+        <p class="text-gray-800 dark:text-white">{{ data.branch.description }}</p>
+      </div>
+      <div class="bg-gray-100 dark:bg-slate-700 p-4 rounded-md">
+        <h3 class="text-lg font-semibold text-green-700 dark:text-green-400">Дата створення</h3>
+        <p class="text-gray-800 dark:text-white">{{ data.branch.created_at }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Обговорення -->
+  <div>
+    <div class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 p-4 rounded-md mb-4 font-medium">
+      Обговорення на гілці: <span class="italic">"{{ data.branch.title }}"</span>
+    </div>
+
+    <div class="space-y-4 mb-6">
+      {% if data.comments %}
+        {% for comment_data in data.comments %}
+        <div class="flex {% if comment_data.comment.user == request.user %}justify-end{% else %}justify-start{% endif %}">
+          {% if comment_data.comment.user != request.user %}
+            <img src="{{ comment_data.comment.user.avatar.url }}" class="w-10 h-10 rounded-full mr-3" alt="avatar">
+          {% endif %}
+          <div class="bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 p-4 rounded-xl max-w-xl shadow-md">
+            <p class="font-semibold mb-1">{{ comment_data.comment.user.username }}</p>
+            <p class="mb-1">{{ comment_data.comment.description }}</p>
+            <span class="text-sm text-gray-500 dark:text-gray-400"><i class="bi bi-clock mr-1"></i>{{ comment_data.comment.created_at }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-center text-gray-500 dark:text-gray-400">Почати обговорення 💤</p>
+      {% endif %}
+    </div>
+
+    <!-- Форма коментаря -->
+    <form method="POST" action="{% url 'comment_create' data.branch.pk %}" class="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-md mb-6">
+      {% csrf_token %}
+      <div class="flex-1">
+        {{ form.description|add_class:"w-full p-3 rounded-md bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-white border border-gray-300 dark:border-slate-600" }}
+      </div>
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white p-3 rounded-full transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </button>
+    </form>
+
+    <!-- Видаление -->
+    <form method="POST" action="{% url 'branch_delete' data.branch.pk %}" class="text-center">
+      {% csrf_token %}
+      <button type="submit" class="text-red-600 hover:text-white hover:bg-red-600 border border-red-600 px-6 py-2 rounded-full transition">
+        Видалити гілку
+      </button>
+    </form>
+  <div class="text-center mt-4">
+    <a href="{% url 'branch_update' data.branch.pk %}">
+    <button class="text-blue-600 hover:text-white hover:bg-blue-600 border border-blue-600 px-6 py-2 rounded-full transition">
+      Редагувати гілку
+    </button>
+  </a>
+  </div>
+  </div>
+</div>
+{% endblock %}

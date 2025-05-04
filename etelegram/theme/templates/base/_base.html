@@ -1,0 +1,20 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uk" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Є-Telegram</title>
+    <link href="{% static 'theme/dist/styles.css' %}" rel="stylesheet">
+    {% block script %}{% endblock %}
+</head>
+
+<body class="bg-white text-black dark:bg-[#1c1e1f] dark:text-white">
+    <div class="flex">
+        {% include 'base/_header.html' %}
+        <main class="flex-1">{% block content %}{% endblock %}</main>
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,47 @@
+{% extends 'base/_base.html' %}
+
+{% block content %}
+<div class="mt-20 px-8">
+  <h1 class="text-4xl font-bold text-white mb-6">Події в Google Calendar</h1>
+
+  <!-- Контейнер для карточек событий -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Безпечне вставлення JSON даних -->
+    {{ json_data|json_script:"events-data" }}
+
+    <!-- Список событий -->
+    <div id="event-list" class="contents"></div>
+  </div>
+</div>
+
+<script>
+  const events = JSON.parse(document.getElementById("events-data").textContent);
+
+  if (Array.isArray(events)) {
+    const eventList = document.getElementById("event-list");
+
+    events.forEach(event => {
+      const li = document.createElement("div");
+      li.className = "bg-[#3b3d3b] rounded-xl shadow-md p-6 text-white flex flex-col justify-between transition hover:shadow-xl hover:scale-[1.02] duration-200";
+
+      li.innerHTML = `
+        <div>
+          <h2 class="text-2xl font-semibold mb-2">${event.summary || 'Без назви'}</h2>
+          <p class="text-sm text-slate-300 mb-1"><strong>Час:</strong> ${new Date(event.start).toLocaleString()} – ${new Date(event.end).toLocaleString()}</p>
+          <p class="text-slate-400 mb-3">${event.description || 'Без опису'}</p>
+          {% if request.user.is_staff %}
+            <p class="text-xs text-slate-500">ID події: ${event.id}</p>
+          {% endif %}
+        </div>
+        <a href="${event.link}" target="_blank"
+          class="mt-4 inline-block bg-teal-500 hover:bg-teal-600 text-white text-center py-2 rounded-lg font-semibold transition">📅 Відкрити в Google Calendar</a>
+      `;
+      eventList.appendChild(li);
+    });
+  } else {
+    const eventList = document.getElementById("event-list");
+    eventList.innerHTML = "<p class='text-white'>Немає подій для відображення.</p>";
+  }
+</script>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto mt-28 p-6 bg-white dark:bg-gray-800 shadow-md rounded-2xl">
+  <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">{{ voting.title }}</h1>
+  {% if voting.description %}
+    <p class="text-gray-600 dark:text-gray-300 mb-6">{{ voting.description }}</p>
+  {% endif %}
+
+  <form method="post" class="space-y-6">
+      {% csrf_token %}
+      <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">🗳️ Оберіть один із варіантів:</h2>
+
+      <div class="space-y-4">
+          {% for answer in answers %}
+              <label class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                  <input type="radio" name="selected_answer" value="{{ answer.id }}"
+                         class="shrink-0 w-5 h-5 text-blue-600 bg-white border-gray-300 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                  <span class="text-gray-800 dark:text-gray-200">{{ answer.title }}</span>
+              </label>
+          {% empty %}
+              <p class="text-red-500">Наразі немає доступних варіантів для голосування.</p>
+          {% endfor %}
+      </div>
+
+      <div class="text-center">
+          <button type="submit"
+                  class="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow transition">
+              Надіслати відповідь
+          </button>
+      </div>
+  </form>
+</div>
+{% endblock %}

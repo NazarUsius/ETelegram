@@ -1,0 +1,61 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block script %}
+<script defer>
+document.addEventListener("DOMContentLoaded", () => {
+    const words = ["Швидкий", "Перевірений", "Доступний"];
+    const colors = ["#10b981", "#06b6d4", "#f43f5e"]; // синий, зелений, фіолетовий
+    const textEl = document.getElementById("animated-text");
+    const bgEl = document.getElementById("background");
+
+    let currentIndex = 0;
+
+    const animateWord = (word) => {
+    textEl.innerHTML = "";
+    [...word].forEach((letter, i) => {
+        const span = document.createElement("span");
+        span.textContent = letter;
+        span.className = "inline-block opacity-0 animate-fade-in";
+        span.style.animationDelay = `${i * 50}ms`;
+        textEl.appendChild(span);
+    });
+
+        // смена фона с плавным переходом
+        bgEl.style.backgroundColor = colors[currentIndex];
+    };
+
+    animateWord(words[currentIndex]);
+
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % words.length;
+        animateWord(words[currentIndex]);
+    }, 2000);
+    });
+</script>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="min-h-screen flex flex-col items-center justify-center text-white space-y-4">
+    
+    <div class="flex justify-center items-center space-x-2">
+        <div class="font-bold text-4xl">Є-Телеграм - це</div>
+        
+        <div id="background" class="rounded-3xl px-6 py-3 transition-colors duration-700 bg-emerald-500">
+            <div id="animated-text" class="flex justify-center font-extrabold text-4xl"></div>
+        </div>
+        
+        <div class="font-bold text-4xl">сервіс для навчальних закладів</div>
+    </div>
+
+    <div class="flex justify-center font-bold text-sm text-gray-500">
+        Щоб почати користуватися сервісом, натисніть на посилання в шапці.
+    </div>
+
+</div>
+{% endblock %}
+
+
+

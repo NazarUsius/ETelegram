@@ -1,0 +1,30 @@
+{% extends 'base/_base.html' %}
+{% load widget_tweaks %}
+
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="flex justify-center items-center h-full py-28">
+    <div class="bg-[#2e3133] p-8 rounded-lg shadow-md w-[650px]">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="space-y-4">
+                {% for field in form %}
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-white" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field|add_class:"bg-[#2e3133] text-white border border-gray-600 rounded-md p-2 w-full" }}
+                </div>
+                {% endfor %}
+            </div>
+            <button class="bg-teal-400 w-full py-2 mt-6 rounded-md" type="submit">Зареєструватися</button>
+            <p class="mt-4 text-sm text-[#cdd6f4] text-center">
+                Вже є аккаунт?
+                <a class="underline hover:text-teal-400" href="{% url 'login' %}">Увійти</a>
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

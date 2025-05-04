@@ -1,0 +1,31 @@
+{% extends 'base/_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto mt-28 p-8 bg-white dark:bg-gray-800 shadow-md rounded-2xl">
+  <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+    ⚙️ Налаштування опитування: <span class="text-blue-600 dark:text-blue-400">{{ voting.title }}</span>
+  </h2>
+
+  <!-- Кнопка додавання відповіді -->
+  <div class="mb-6">
+    <a href="{% url 'answer_create' voting_pk=voting.pk %}" 
+       class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow transition">
+      ➕ Додати відповідь
+    </a>
+  </div>
+
+  <!-- Список відповідей -->
+  {% if voting.answers.all %}
+    <div class="space-y-4">
+      {% for answer in voting.answers.all %}
+        <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-sm">
+          <h4 class="text-lg font-semibold text-gray-800 dark:text-white">Відповідь: {{ answer.title }}</h4>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-gray-500 dark:text-gray-400 italic">Відповідей ще немає.</p>
+  {% endif %}
+</div>
+{% endblock %}
